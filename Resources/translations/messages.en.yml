@@ -1,13 +1,15 @@
 Plugins: "Plugins"
 plugin:
-  newsletter:
+  printissuemanager:
     label:
-      title: "Newsletter"
+      title: "Print Issues Manager"
       config: "configuration"
       options: "Options"
+      createnew: "Create new issue?"
     msg:
       saved: "Successfully saved."
       error: "Could not save."
+      ipaderror: "iPad section does not exists. Create iPad section first to be able to add mobile issues."
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"

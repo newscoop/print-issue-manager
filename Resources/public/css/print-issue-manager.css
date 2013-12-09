@@ -1,0 +1,16 @@
+.plugin-container {
+    padding: 10px 10px 30px 10px; 
+    border: 1px solid #ccc; 
+    background-color: #FFF; 
+    font-size: 12px;
+}
+
+.btn.btn-primary a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+form#choose-issue {
+    float:left; 
+    margin-top: 10px;
+}

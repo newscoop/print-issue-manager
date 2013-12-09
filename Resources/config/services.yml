@@ -12,3 +12,7 @@ services:
             - { name: kernel.event_listener, event: newscoop_newscoop.menu_configure, method: onMenuConfigure }
         arguments: 
             - @translator
+
+    newscoop_print_issue_manager.service:
+        class:      Newscoop\PrintIssueManagerBundle\Services\PrintIssueManagerService
+        arguments:  ["@em"]

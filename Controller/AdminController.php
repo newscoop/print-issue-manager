@@ -23,6 +23,29 @@ class AdminController extends Controller
      */
     public function indexAction(Request $request)
     {   
-        
+        $articleService = $this->container->get('newscoop_print_issue_manager.service');
+        $em = $this->container->get('em');
+
+        $mobileIssuesArticles = $articleService->getMobileIssues();
+        $latestPrintIssues = $articleService->getLatestIssues(4);
+
+        $iPadSection = $articleService->findIpadSection();
+
+        krsort($mobileIssuesArticles);
+        $_SESSION['pim_allow_unpublished'] = true;
+
+        $iPadLinkParams = array();
+        foreach ($iPadSection as $value) {
+            $iPadLinkParams['publicationId'] = $value->getIssue()->getPublicationId();
+            $iPadLinkParams['issueId'] = $value->getIssue()->getNumber();
+            $iPadLinkParams['number'] = $value->getNumber();
+            $iPadLinkParams['languageId'] = $value->getLanguageId();
+        }
+
+        return array(
+            'issues' => $mobileIssuesArticles,
+            'latestPrintIssues' => $latestPrintIssues,
+            'iPadLinkParams' => $iPadLinkParams,
+        );
     }
 }

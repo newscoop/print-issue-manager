@@ -49,9 +49,9 @@ class LifecycleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'plugin.install.newscoop_print_issue_manager_bundle' => array('install', 1),
-            'plugin.update.newscoop_print_issue_manager_bundle' => array('update', 1),
-            'plugin.remove.newscoop_print_issue_manager_bundle' => array('remove', 1),
+            'plugin.install.newscoop_print_issue_manager' => array('install', 1),
+            'plugin.update.newscoop_print_issue_manager' => array('update', 1),
+            'plugin.remove.newscoop_print_issue_manager' => array('remove', 1),
         );
     }
 

@@ -3,13 +3,42 @@
 {% block admin_title %} {{ parent() }} - {{ 'plugin.printissuemanager.label.title'|trans }}{% endblock %}
 {% block admin_page_title_content %}{{ 'plugin.printissuemanager.label.title'|trans }} - {{ 'plugin.printissuemanager.label.config'|trans }}{% endblock %}
 {% block admin_stylesheets %}
-<link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/DT_bootstrap.css">
-<link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopprintissuemanager/css/print-issue-manager.css">
+<link rel="stylesheet" href="{{ asset('/bundles/newscoopnewscoop/css/bootstrap.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/bundles/newscoopnewscoop/css/DT_bootstrap.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/bundles/newscoopprintissuemanager/css/print-issue-manager.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('/js/select2-3.4.1/select2.css') }}" />
 {% endblock %}
 {% block admin_scripts %}
-<script type="text/javascript" src="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/js/DT_bootstrap.js"></script>
+<script src="{{ asset('/js/select2-3.4.1/select2.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/bundles/newscoopnewscoop/js/DT_bootstrap.js') }}"></script>
+
 {% endblock %}
 {% block admin_content %}
-
+{% if iPadLinkParams is empty %}
+<h5><div class="alert alert-info">{{ 'plugin.printissuemanager.msg.ipaderror'|trans }}</div></h5>
+{% endif %}
+<div class="plugin-container">
+    <form id="choose-issue" action="" method="POST">
+        <select class="mobile_issues aaselect" style="width: 300px;">
+            {% for article in issues %}
+            <option data-number="{{ article.number }}" data-language="{{ article.languageId }}" value="{{ article.number }}_{{ article.languageId }}" data-content-box-href="">{{ article.name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    {% if iPadLinkParams %} 
+        <div style="float:right">
+            <h5>
+                {{ 'plugin.printissuemanager.label.createnew'|trans }}
+                <button type="button" class="btn btn-primary"><a href="/admin/articles/?f_publication_id={{ iPadLinkParams.publicationId}}&f_issue_number={{ iPadLinkParams.issueId}}&f_section_number={{ iPadLinkParams.number}}&f_language_id={{ iPadLinkParams.languageId}}">To the category iPad</a></button>
+            </h5>
+        </div> 
+    {% endif %}
+    <div style="clear:both"></div>
+    <hr />
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('select.mobile_issues').select2();
+});
+</script>
 {% endblock %}
