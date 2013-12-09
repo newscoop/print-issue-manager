@@ -1,0 +1,4 @@
+newscoop_print_issue_manager:
+    resource: "@NewscoopPrintIssueManagerBundle/Controller/"
+    type:     annotation
+    prefix:   /

@@ -1,0 +1,24 @@
+Plugins: "Plugins"
+plugin:
+  newsletter:
+    label:
+      title: "Newsletter"
+      config: "configuration"
+      options: "Options"
+    msg:
+      saved: "Successfully saved."
+      error: "Could not save."
+    table:
+      info: "Showing _START_ to _END_ of _TOTAL_ entries"
+      noentries: "No entries to show"
+      filtering: " - filtering from _MAX_ records"
+      menu: "Display _MENU_ records"
+      label:
+        search: "Search"
+        filter: "Filter"
+        processing: "Processing..."
+        last: "Last"
+        next: "Next"
+        first: "First"
+        previous: "Previous"
+        norecords: "No records found."

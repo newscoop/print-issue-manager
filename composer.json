@@ -1,0 +1,23 @@
+{
+    "name": "newscoop/print-issue-manager-bundle",
+    "description": "Newscoop Newsletter Plugin bundle",
+    "keywords": ["newscoop", "print", "issue", "manager", "plugin", "bundle"],
+    "version": "0.2",
+    "type": "newscoop-plugin",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Rafał Muszyński",
+            "email": "rafal.muszynski@sourcefabric.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "newscoop/plugins-installer": ">=v0.2"
+    },
+    "autoload": {
+        "psr-0": { "Newscoop\\PrintIssueManagerBundle": "" }
+    },
+    "target-dir": "Newscoop/PrintIssueManagerBundle",
+    "minimum-stability": "dev"
+}

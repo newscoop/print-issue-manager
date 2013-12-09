@@ -1,0 +1,15 @@
+{% extends 'NewscoopNewscoopBundle::admin_layout.html.twig' %}
+
+{% block admin_title %} {{ parent() }} - {{ 'plugin.printissuemanager.label.title'|trans }}{% endblock %}
+{% block admin_page_title_content %}{{ 'plugin.printissuemanager.label.title'|trans }} - {{ 'plugin.printissuemanager.label.config'|trans }}{% endblock %}
+{% block admin_stylesheets %}
+<link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/css/DT_bootstrap.css">
+<link rel="stylesheet" href="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopprintissuemanager/css/print-issue-manager.css">
+{% endblock %}
+{% block admin_scripts %}
+<script type="text/javascript" src="{{ Newscoop['WEBSITE_URL'] }}/bundles/newscoopnewscoop/js/DT_bootstrap.js"></script>
+{% endblock %}
+{% block admin_content %}
+
+{% endblock %}
