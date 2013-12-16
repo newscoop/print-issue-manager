@@ -14,3 +14,15 @@ form#choose-issue {
     float:left; 
     margin-top: 10px;
 }
+
+.ipad-section {
+    float:right;
+}
+
+.ipad-section h5 {
+    margin-right: 40px;
+}
+
+.dataTables_wrapper {
+    margin: 0;
+}

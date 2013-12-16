@@ -6,10 +6,18 @@ plugin:
       config: "configuration"
       options: "Options"
       createnew: "Create new issue?"
+      loadarticles: "Load articles"
+      from: "from"
+      noissues: "No mobile issues defined."
+      published: "published"
+      submitted: "submitted"
+    btn:
+      addarticles: "Add new articles"
     msg:
       saved: "Successfully saved."
       error: "Could not save."
       ipaderror: "iPad section does not exists. Create iPad section first to be able to add mobile issues."
+      loading: "Loading..."
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"
