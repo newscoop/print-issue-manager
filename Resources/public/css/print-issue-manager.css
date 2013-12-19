@@ -26,3 +26,17 @@ form#choose-issue {
 .dataTables_wrapper {
     margin: 0;
 }
+
+.btn.btn-danger a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.btn.btn-success a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+#inline-select, #inline-input {
+    width: auto
+}

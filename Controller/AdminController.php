@@ -51,7 +51,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/print-issue-manager/load-articles")
+     * @Route("/admin/print-issue-manager/load-articles", options={"expose"=true})
      */
     public function loadArticlesAction(Request $request)
     {
@@ -60,11 +60,8 @@ class AdminController extends Controller
         $service =  $this->container->get('newscoop_print_issue_manager.service');
         $printdeskUser = $user->findOneBy(array('username' => 'printdesk'));
         var_dump($request->get('context_box_id'));die;
-        try {
-            $existingArticles = array_values($service->getContextBoxArticleList($request->get('context_box_id')));
-        } catch (\Exception $e) {
-            return new \Exception('Error occured, "id" value is empty.');
-        }
+
+        $existingArticles = array_values($service->getContextBoxArticleList($request->get('context_box_id')));
 die;
         // get last or two issues numbers
         $latestIssues = $_POST['issues_range'];
@@ -109,7 +106,7 @@ die;
     }
 
     /**
-     * @Route("/admin/print-issue-manager/get-issue-articles")
+     * @Route("/admin/print-issue-manager/get-issue-articles", options={"expose"=true})
      */
     public function getIssueArticlesAction(Request $request, $articleNumber = null, $articleLanguage = null)
     {
@@ -133,7 +130,7 @@ die;
 
         $contextBox = $service->getContextBoxByIssueId($issue->getId());
         $relatedArticles = $service->getRelatedArticles($issue);
-        $items = $service->createList($relatedArticles);
+        $items = $this->createList($relatedArticles);
 
         $temp = array(
             'issue' => array(
@@ -142,7 +139,7 @@ die;
                 'date' => $issue->getDate(),
                 'title' => $issue->getTitle(),
                 'status' => $issue->getWorkflowStatus(),
-                //'freeze' => $issue->getData('freeze'),
+                'freeze' => $issue->getData('freeze'),
                 'url' => '/admin/articles/edit.php' . '?f_publication_id=' . $issue->getPublicationId()
                         . '&amp;f_issue_number=' . $issue->getIssue()->getNumber() . '&amp;f_section_number=' . $issue->getSection()->getNumber()
                         . '&amp;f_article_number=' . $issue->getNumber() . '&amp;f_language_id=' . $issue->getLanguageId()
@@ -173,7 +170,7 @@ die;
     }
 
     /**
-     * @Route("/admin/print-issue-manager/remove-article")
+     * @Route("/admin/print-issue-manager/remove-article", options={"expose"=true})
      */
     public function removeArticleAction(Request $request)
     {
@@ -181,7 +178,7 @@ die;
     }
 
     /**
-     * @Route("/admin/print-issue-manager/save-articles")
+     * @Route("/admin/print-issue-manager/save-articles", options={"expose"=true})
      */
     public function saveArticlesAction(Request $request)
     {
@@ -189,10 +186,90 @@ die;
     }
 
     /**
-     * @Route("/admin/print-issue-manager/update-order")
+     * @Route("/admin/print-issue-manager/update-order", options={"expose"=true})
      */
     public function updateOrderAction(Request $request)
     {
 
+    }
+
+    private function createList($relatedArticles)
+    {
+        $items = array();
+        if (count($relatedArticles) > 0) {
+            foreach ($relatedArticles as $article) {
+                $relatedArticleInfo = array();
+                $relatedArticle = new \stdClass();
+
+                $relatedArticle->id = $article->getNumber();
+                $relatedArticle->Title = '<a href="/admin/articles/edit.php' . '?f_publication_id=' . $article->getPublicationId()
+                        . '&amp;f_issue_number=' . $article->getIssue()->getNumber() . '&amp;f_section_number=' . $article->getSection()->getNumber()
+                        . '&amp;f_article_number=' . $article->getNumber() . '&amp;f_language_id=' . $article->getLanguageId()
+                        . '&amp;f_language_selected=' . $article->getLanguageId().'">'.$article->getTitle().'</a>';
+                $relatedArticle->ArticleType = $article->getType();
+                
+                try {
+                    $relatedArticle->OnlineSections = $article->getSection()->getName();
+                    $publicationId = $article->getPublicationId();
+                } catch(\Doctrine\ORM\EntityNotFoundException $e) {
+                    $relatedArticle->OnlineSections = null;
+                    $publicationId = null;
+                }
+
+                try {
+                    $relatedArticle->PrintSection = $article->getData('printsection');
+                } catch(\InvalidPropertyException $e) {
+                    $relatedArticle->PrintSection = null;
+                }
+
+                try {
+                    $relatedArticle->PrintStory = $article->getData('printstory');
+                } catch(\InvalidPropertyException $e) {
+                    $relatedArticle->PrintStory = null;
+                }
+
+                try {
+                    $relatedArticle->Prominent = $article->getData('iPad_prominent');
+                } catch(\InvalidPropertyException $e) {
+                    $relatedArticle->Prominent = null;
+                }
+
+                $relatedArticle->LanguageId = $article->getLanguageId();
+                $webcodeService =  $this->container->get('webcode');
+                $relatedArticle->Webcode = $webcodeService->getArticleWebcode($article);
+
+                $issueNumber = $article->getIssue()->getNumber();
+                $sectionNumber = $article->getSection()->getNumber();
+                $languageId = $article->getLanguageId();
+
+                $metaArticle = new \MetaArticle((int) $languageId, $article->getNumber());
+                $metaPublication = new \MetaPublication($publicationId);
+                $metaIssue = new \MetaIssue($publicationId, $languageId, $issueNumber);
+                $metaSection = new \MetaSection($publicationId, $issueNumber, $languageId, $sectionNumber);
+
+                $url = \CampSite::GetURIInstance();
+                $url->publication = $metaPublication;
+                $url->issue = $metaIssue;
+                $url->section = $metaSection;
+                $url->article = $metaArticle;
+                $frontendURI = $url->getURI('article');
+                $relatedArticle->Uri = $frontendURI;
+
+                $relatedArticle->Preview = /*array(
+                    'module' => 'api',
+                    'controller' => 'articles',
+                    'action' => 'item',
+                ) .'?'. http_build_query(array(
+                    'article_id' => $article->getNumber(),
+                    'side' => 'front',
+                    'language_id' => $article->getLanguageId(),
+                    'allow_unpublished' => true
+                ));*/ 'no mobile api yet';
+
+                $items[] = $relatedArticle;
+            }
+        }
+
+        return $items;
     }
 }

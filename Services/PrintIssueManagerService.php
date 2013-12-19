@@ -196,86 +196,6 @@ class PrintIssueManagerService
         return $contextBox;
     }
 
-    public function createList($relatedArticles)
-    {
-        $items = array();
-        if (count($relatedArticles) > 0) {
-            foreach ($relatedArticles as $article) {
-                $one_art_info = array();
-                $one_art_obj = new stdClass();
-
-                $one_art_obj->id = $article->getNumber();
-                $one_art_obj->Title = '<a href='.$this->view->serverUrl('/admin/articles/edit.php' . '?f_publication_id=' . $article->getPublicationId()
-                        . '&amp;f_issue_number=' . $article->getIssueId() . '&amp;f_section_number=' . $article->getSectionId()
-                        . '&amp;f_article_number=' . $article->getNumber() . '&amp;f_language_id=' . $article->getLanguageId()
-                        . '&amp;f_language_selected=' . $article->getLanguageId().'">'.$article->getTitle().'</a>'
-                    );
-                $one_art_obj->ArticleType = $article->getType();
-                
-                try {
-                    $one_art_obj->OnlineSections = $article->getSectionName();
-                    $publication_id = $article->getPublicationId();
-                } catch(\Doctrine\ORM\EntityNotFoundException $e) {
-                    $one_art_obj->OnlineSections = null;
-                    $publication_id = null;
-                }
-
-                try {
-                    $one_art_obj->PrintSection = $article->getData('printsection');
-                } catch(\InvalidPropertyException $e) {
-                    $one_art_obj->PrintSection = null;
-                }
-
-                try {
-                    $one_art_obj->PrintStory = $article->getData('printstory');
-                } catch(\InvalidPropertyException $e) {
-                    $one_art_obj->PrintStory = null;
-                }
-
-                try {
-                    $one_art_obj->Prominent = $article->getData('iPad_prominent');
-                } catch(\InvalidPropertyException $e) {
-                    $one_art_obj->Prominent = null;
-                }
-
-                $one_art_obj->LanguageId = $article->getLanguageId();
-                $one_art_obj->Webcode = Manager::getWebcoder('')->encode($article->getNumber());
-
-                $issue_number = $article->getIssueNumber();
-                $section_number = $article->getSectionNumber();
-                $language_id = $article->getLanguageId();
-
-                $meta_article = new \MetaArticle((int) $language_id, $article->getNumber());
-                $meta_publication = new \MetaPublication($publication_id);
-                $meta_issue = new \MetaIssue($publication_id, $language_id, $issue_number);
-                $meta_section = new \MetaSection($publication_id, $issue_number, $language_id, $section_number);
-
-                $url = \CampSite::GetURIInstance();
-                $url->publication = $meta_publication;
-                $url->issue = $meta_issue;
-                $url->section = $meta_section;
-                $url->article = $meta_article;
-                $frontendURI = $url->getURI('article');
-                $one_art_obj->Uri = $frontendURI;
-
-                $one_art_obj->Preview = $this->view->serverUrl($this->view->url(array(
-                    'module' => 'api',
-                    'controller' => 'articles',
-                    'action' => 'item',
-                ), 'default') .'?'. http_build_query(array(
-                    'article_id' => $article->getNumber(),
-                    'side' => 'front',
-                    'language_id' => $article->getLanguageId(),
-                    'allow_unpublished' => true
-                )));
-
-                $items[] = $one_art_obj;
-            }
-        }
-
-        return $items;
-    }
-
     /**
      * Gets an issues list for given id.
      *
@@ -298,7 +218,7 @@ class PrintIssueManagerService
             $returnArray = array();
             if (is_array($rows)) {
                 foreach($rows as $row) {
-                    $returnArray[] = $row['fk_article_no'];
+                    $returnArray[] = $row['articleNumber'];
                 }
             }
 
