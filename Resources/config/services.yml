@@ -2,7 +2,7 @@ services:
     newscoop_print_issue_manager.lifecyclesubscriber:
         class: Newscoop\PrintIssueManagerBundle\EventListener\LifecycleSubscriber
         arguments:
-            - @em
+            - @service_container
         tags:
             - { name: kernel.event_subscriber}
 
@@ -15,4 +15,8 @@ services:
 
     newscoop_print_issue_manager.service:
         class:      Newscoop\PrintIssueManagerBundle\Services\PrintIssueManagerService
+        arguments:  ["@em"]
+
+    newscoop_print_issue_manager.article_type.service:
+        class:      Newscoop\PrintIssueManagerBundle\Services\ArticleTypeConfigurationService
         arguments:  ["@em"]

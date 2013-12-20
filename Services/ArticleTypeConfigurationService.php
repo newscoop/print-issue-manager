@@ -21,14 +21,14 @@ class ArticleTypeConfigurationService
      *
      * @var string
      */
-    private $name = 'iPad_Ad';
+    private $name;
 
     /**
      * Configuration array for articleTypeField
      *
      * @var array
      */
-    private $fieldArray = array(
+    private $iPadFieldArray = array(
         'ad_name' => array(
             'entryMethod' => 'getAdName',
             'type' => 'text', 'max_size' => 255
@@ -41,8 +41,8 @@ class ArticleTypeConfigurationService
             'entryMethod' => 'getActive',
             'type' => 'switch'
         ),
-        'weekly_issue ' => array(
-            'entryMethod' => 'getWeeklyIssue ',
+        'weekly_issue' => array(
+            'entryMethod' => 'getWeeklyIssue',
             'type' => 'switch'
         ),
         'ad_left' => array(
@@ -53,8 +53,8 @@ class ArticleTypeConfigurationService
             'entryMethod' => 'getAdRight',
             'type' => 'switch'
         ),
-        'newshighlight ' => array(
-            'entryMethod' => 'getNewshighlight ',
+        'newshighlight' => array(
+            'entryMethod' => 'getNewshighlight',
             'type' => 'switch'
         ),
         'sectionlists' => array(
@@ -62,7 +62,51 @@ class ArticleTypeConfigurationService
             'type' => 'switch'
         ),
         'blogs_dossiers' => array(
-            'entryMethod' => 'getBlogsDossiers ',
+            'entryMethod' => 'getBlogsDossiers',
+            'type' => 'switch'
+        ),
+    );
+
+    /**
+     * Configuration array for articleTypeField
+     *
+     * @var array
+     */
+    private $mobileIssueFieldArray = array(
+        'shortdescription' => array(
+            'entryMethod' => 'getShortdescription',
+            'type' => 'text', 'max_size' => 255
+        ),
+        'issue_number' => array(
+            'entryMethod' => 'getIssueNumber',
+            'type' => 'text', 'max_size' => 255
+        ),
+        'issuedate' => array(
+            'entryMethod' => 'getIssuedate',
+            'type' => 'date'
+        ),
+        'freeze' => array(
+            'entryMethod' => 'getFreeze',
+            'type' => 'switch'
+        ),
+    );
+
+    /**
+     * Configuration array for articleTypeField
+     *
+     * @var array
+     */
+    private $newsFieldArray = array(
+        'printsection' => array(
+            'entryMethod' => 'getPrintsection',
+            'type' => 'text', 'max_size' => 255
+        ),
+        'printstory' => array(
+            'entryMethod' => 'getPrintstory',
+            'type' => 'text', 'max_size' => 255
+        ),
+        'iPad_prominent' => array(
+            'entryMethod' => 'getIPadProminent',
             'type' => 'switch'
         ),
     );
@@ -87,6 +131,18 @@ class ArticleTypeConfigurationService
     }
 
     /**
+     * Setter for name
+     *
+     * @return string
+     */
+    public function setName($name)
+    {   
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * Get tablename for articleType
      *
      * @return string
@@ -101,10 +157,10 @@ class ArticleTypeConfigurationService
      *
      * @return array
      */
-    public function getArticleTypeConfiguration()
+    public function getArticleTypeConfiguration($fieldArray)
     {
         $confArray = array();
-        foreach ($this->fieldArray AS $fieldID => $settingsArray) {
+        foreach ($fieldArray as $fieldID => $settingsArray) {
             unset($settingsArray['entryMethod']);
             $confArray[$fieldID] = $settingsArray;
         }
@@ -130,20 +186,34 @@ class ArticleTypeConfigurationService
     /**
      * Creates a new article type for Newscoop
      */
-    public function create()
-    {
-        $this->populateArticleTypeMetadata();
-        $this->createArticleTypeTable();
-        $this->extendArticleTypeTable();
+    public function create($name)
+    {   
+        $this->setName($name);
+        if ($name == 'iPad_Ad') {
+            $this->extendArticleTypeTable($this->newsFieldArray);
+            $this->populateArticleTypeMetadata($name, $this->iPadFieldArray);
+            $this->createArticleTypeTable($name);
+            $this->extendArticleTypeTable($this->iPadFieldArray);
+        } else {
+            $this->populateArticleTypeMetadata($name, $this->mobileIssueFieldArray);
+            $this->createArticleTypeTable($name);
+            $this->extendArticleTypeTable($this->mobileIssueFieldArray);
+        }
     }
 
     /**
      * Remove article type
      */
-    public function remove()
-    {
+    public function remove($name)
+    {   
+        $this->setName($name);
         $this->removeArticleTypeTable();
-        $this->removeArticleTypeMetadata();
+        if ($name == 'iPad_Ad') {
+            $this->removeArticleTypeMetadata($name, $this->iPadFieldArray);
+        } else {
+            $this->removeArticleTypeMetadata($name, $this->mobileIssueFieldArray);
+        }
+        
     }
 
     /**
@@ -169,14 +239,14 @@ class ArticleTypeConfigurationService
      * Extends article type table with configured fields
      * NOTE: This ia a hack, should be converted to new ArticleType Entity
      */
-    private function extendArticleTypeTable()
+    private function extendArticleTypeTable($fieldArray)
     {
         // Create article type
         $tableName  = $this->getTableName();
         $query      = '';
 
         $types = \ArticleTypeField::DatabaseTypes(null, null);
-        $articleTypeFields = $this->getArticleTypeConfiguration();
+        $articleTypeFields = $this->getArticleTypeConfiguration($fieldArray);
 
         foreach ($articleTypeFields AS $fieldId => $fieldData) {
             $query .= "ALTER TABLE `" . $tableName . "` ADD COLUMN `F"
@@ -202,17 +272,19 @@ class ArticleTypeConfigurationService
      * Creates entries in articletypemetedata table for current article type
      * NOTE: This already uses entities, but should probably go in a better place
      */
-    private function populateArticleTypeMetadata()
+    private function populateArticleTypeMetadata($name, $customfieldArray)
     {
-        $fieldArray = $this->getArticleTypeConfiguration();
+        $fieldArray = array();
         $weight = 1;
 
         $newswireType = new \Newscoop\Entity\ArticleType();
-        $newswireType->setName($this->getName());
+        $newswireType->setName($name);
 
         $this->em->persist($newswireType);
 
-        foreach ($fieldArray AS $fieldID => $fieldParams) {
+        $fieldArray = $this->getArticleTypeConfiguration($customfieldArray);
+
+        foreach ($fieldArray as $fieldID => $fieldParams) {
 
             $articleField = new \Newscoop\Entity\ArticleTypeField();
             $articleField->setName($fieldID);
@@ -250,14 +322,14 @@ class ArticleTypeConfigurationService
      * Creates entries in articletypemetedata table for current article type
      * NOTE: This already uses entities, but should probably go in a better place
      */
-    private function removeArticleTypeMetadata()
+    private function removeArticleTypeMetadata($name, $fieldArray)
     {
-        $fieldArray = $this->getArticleTypeConfiguration();
+        $fieldArray = $this->getArticleTypeConfiguration($fieldArray);
         $weight = 0;
 
         $articleTypes = $this->em
             ->getRepository('\Newscoop\Entity\ArticleType')
-            ->findByName($this->getName());
+            ->findByName($name);
 
         foreach ($articleTypes as $articleType) {
             $this->em->remove($articleType);

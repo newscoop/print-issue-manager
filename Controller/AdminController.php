@@ -110,7 +110,7 @@ class AdminController extends Controller
      */
     public function getIssueArticlesAction(Request $request, $articleNumber = null, $articleLanguage = null)
     {
-        if (!$articleNumber) {
+       if (!$articleNumber) {
             $articleNumber = $request->get('article_number');
         }
 
@@ -127,6 +127,10 @@ class AdminController extends Controller
                 'number'=> $articleNumber,
                 'language' => $articleLanguage
             ));
+
+        if (!$issue) {
+            return $this->redirect($this->generateUrl('newscoop_printissuemanager_admin_index'));
+        }
 
         $contextBox = $service->getContextBoxByIdOrIssueId(null, $issue->getId());
         $relatedArticles = $service->getRelatedArticles($issue);

@@ -18,8 +18,11 @@ class LifecycleSubscriber implements EventSubscriberInterface
 {
     private $em;
 
-    public function __construct($em) {
-        $this->em = $em;
+    private $artcileTypeService;
+
+    public function __construct($container) {
+        $this->em = $container->get('em');
+        $this->artcileTypeService = $container->get('newscoop_print_issue_manager.article_type.service');
     }
 
     public function install(GenericEvent $event)
@@ -29,6 +32,10 @@ class LifecycleSubscriber implements EventSubscriberInterface
 
         // Generate proxies for entities
         $this->em->getProxyFactory()->generateProxyClasses($this->getClasses(), __DIR__ . '/../../../../library/Proxy');
+
+        // Create articletypes
+        $this->artcileTypeService->create('mobile_issue');
+        $this->artcileTypeService->create('iPad_Ad');
     }
 
     public function update(GenericEvent $event)
@@ -38,12 +45,20 @@ class LifecycleSubscriber implements EventSubscriberInterface
 
         // Generate proxies for entities
         $this->em->getProxyFactory()->generateProxyClasses($this->getClasses(), __DIR__ . '/../../../../library/Proxy');
+
+        // Create articletypes
+        $this->artcileTypeService->create('mobile_issue');
+        $this->artcileTypeService->create('iPad_Ad');
     }
 
     public function remove(GenericEvent $event)
     {
         $tool = new \Doctrine\ORM\Tools\SchemaTool($this->em);
         $tool->dropSchema($this->getClasses(), true);
+
+        // Remove articletypes
+        $this->artcileTypeService->remove('iPad_Ad');
+        $this->artcileTypeService->remove('mobile_issue');
     }
 
     public static function getSubscribedEvents()

@@ -9,7 +9,30 @@
 {% endblock %}
 {% block admin_scripts %}
 <script type="text/javascript" src="{{ asset('/bundles/newscoopnewscoop/js/DT_bootstrap.js') }}"></script>
-
+<script type="text/javascript">
+    var trans = {
+        'frozen': '{{ 'plugin.printissuemanager.label.frozen'|trans }}',
+        'published': '{{ 'plugin.printissuemanager.label.published'|trans }}',
+        'submitted': '{{ 'plugin.printissuemanager.label.submitted'|trans }}',
+        'delete': '{{ 'plugin.printissuemanager.btn.delete'|trans }}',
+        'preview': '{{ 'plugin.printissuemanager.btn.preview'|trans }}',
+        'save': '{{ 'plugin.printissuemanager.btn.save'|trans }}',
+        'search': '{{ 'plugin.newsletter.label.search'|trans }}',
+        'saved': '{{ 'plugin.printissuemanager.label.saved'|trans }}',
+        'processing': '{{ 'plugin.printissuemanager.label.processing'|trans }}',
+        'articlesloaded': '{{ 'plugin.printissuemanager.label.articlesloaded'|trans }}',
+        'chooseprintsection': '{{ 'plugin.printissuemanager.label.chooseprintsection'|trans }}', 
+        'addnew': '{{ 'plugin.printissuemanager.label.addnew'|trans }}',
+        'backtolist': '{{ 'plugin.printissuemanager.label.backtolist'|trans }}',
+        'chooseprintstory': '{{ 'plugin.printissuemanager.label.chooseprintstory'|trans }}',
+        'addnewone': '{{ 'plugin.printissuemanager.label.addnewone'|trans }}',
+        'articlesaved': '{{ 'plugin.printissuemanager.msg.saved'|trans }}',
+        'articleremoved': '{{ 'plugin.printissuemanager.label.articleremoved'|trans }}',
+        'isfrozen': '{{ 'plugin.printissuemanager.label.isfrozen'|trans }}',
+        'inlinediterror': '{{ 'plugin.printissuemanager.label.inlineediterror'|trans }}',
+        'noarticles': '{{ 'plugin.printissuemanager.label.noarticles'|trans }}',
+    };
+</script>
 {% endblock %}
 {% block admin_content %}
 {% if iPadLinkParams is empty %}
@@ -103,31 +126,7 @@
             <input type="hidden" class="js-prominent" name="prominent" value="">
         </form>
     </div>
+    <script type="text/javascript" src="{{ asset('/bundles/newscoopprintissuemanager/js/print-issue-manager.js') }}"></script>
     {% endif %}
 </div>
-<script type="text/javascript">
-    var trans = {
-        'frozen': '{{ 'plugin.printissuemanager.label.frozen'|trans }}',
-        'published': '{{ 'plugin.printissuemanager.label.published'|trans }}',
-        'submitted': '{{ 'plugin.printissuemanager.label.submitted'|trans }}',
-        'delete': '{{ 'plugin.printissuemanager.btn.delete'|trans }}',
-        'preview': '{{ 'plugin.printissuemanager.btn.preview'|trans }}',
-        'save': '{{ 'plugin.printissuemanager.btn.save'|trans }}',
-        'search': '{{ 'plugin.newsletter.label.search'|trans }}',
-        'saved': '{{ 'plugin.printissuemanager.label.saved'|trans }}',
-        'processing': '{{ 'plugin.printissuemanager.label.processing'|trans }}',
-        'articlesloaded': '{{ 'plugin.printissuemanager.label.articlesloaded'|trans }}',
-        'chooseprintsection': '{{ 'plugin.printissuemanager.label.chooseprintsection'|trans }}', 
-        'addnew': '{{ 'plugin.printissuemanager.label.addnew'|trans }}',
-        'backtolist': '{{ 'plugin.printissuemanager.label.backtolist'|trans }}',
-        'chooseprintstory': '{{ 'plugin.printissuemanager.label.chooseprintstory'|trans }}',
-        'addnewone': '{{ 'plugin.printissuemanager.label.addnewone'|trans }}',
-        'articlesaved': '{{ 'plugin.printissuemanager.msg.saved'|trans }}',
-        'articleremoved': '{{ 'plugin.printissuemanager.label.articleremoved'|trans }}',
-        'isfrozen': '{{ 'plugin.printissuemanager.label.isfrozen'|trans }}',
-        'inlinediterror': '{{ 'plugin.printissuemanager.label.inlineediterror'|trans }}',
-        'noarticles': '{{ 'plugin.printissuemanager.label.noarticles'|trans }}',
-    };
-</script>
-<script type="text/javascript" src="{{ asset('/bundles/newscoopprintissuemanager/js/print-issue-manager.js') }}"></script>
 {% endblock %}
