@@ -13,7 +13,7 @@ plugin:
       submitted: "Submitted"
       frozen: "Frozen"
       search: "Search"
-      saved: "Saved."
+      saved: "Order saved."
       articlesloaded: "Articles loaded."
       chooseprintsection: "Choose printsection"
       chooseprintstory: "Choose printstory"

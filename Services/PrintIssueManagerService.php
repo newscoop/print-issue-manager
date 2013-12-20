@@ -242,7 +242,7 @@ class PrintIssueManagerService
 
     public function saveList($contextListId, $articlesNumbers) {
         $this->removeList($contextListId);
-        $this->insertList($contextListId, $articlesNumbers);
+        $this->insertList($contextListId, array_unique($articlesNumbers));
     }
 
     public function removeList($contextListId) 
@@ -267,7 +267,6 @@ class PrintIssueManagerService
     public function insertList($contextBoxId, $articlesNumbers) 
     {
         try {
-
             foreach($articlesNumbers as $articleNumber) {
                 $contextList = new ContextArticle();
                 $contextList->setContextListId($contextBoxId);

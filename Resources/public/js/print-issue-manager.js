@@ -72,12 +72,8 @@
                 fnRowCallback: function( nRow, aData, iDisplayIndex ) {
                     for(i=0; i < aData.length; i++) {
                         if(i == 0) {
-                            $('td:eq('+i+')', nRow).html('<button type="button" class="btn btn-danger btn-xs"><a href="'+Routing.generate('newscoop_printissuemanager_admin_removearticle')+'" data-article-id="'+aData[10]+'" data-article-id="'+aData[10]+'" data-language-id="'+aData[11]+'" class="remove">'+trans['delete']+'</a></button>');
+                            $('td:eq('+i+')', nRow).html('<button type="button" class="btn btn-danger btn-xs"><a href="'+Routing.generate('newscoop_printissuemanager_admin_removearticle', { id: aData[10] })+'" data-article-id="'+aData[10]+'" data-language-id="'+aData[11]+'" class="remove">'+trans['delete']+'</a></button>');
                         }
-
-                        /*if(i == 3 && $('td:eq('+i+')', nRow).html() == 'iPad_Ad') {
-                            $('td:eq('+i+')', nRow).addClass('js-printstory').data('editable', false);
-                        }*/
 
                         if(i == 5) {
                             if ($('td:eq(3)', nRow).html() != 'iPad_Ad') {
@@ -148,9 +144,12 @@
                     'article_language': printIssueManager.currentIssue['language']
                 }
             }).done(function(res) {
+                try {
                 printIssueManager.tableData = res.aaData;
                 printIssueManager.currentIssue = res.issue;
-                printIssueManager.utils.upadateTable($("table.issueArticles"), res)
+                printIssueManager.utils.upadateTable($("table.issueArticles"), res);
+                } catch (e) {}
+                
                 flashMessage(trans['saved']);
             });
         },
@@ -324,7 +323,6 @@
             var url = element.attr('href');
             var issue = $('select.mobile_issues option:selected');
             var data = {
-                'article_number' : element.data('articleId'),
                 'context_box_id' : issue.data('contextId')
             }
 
@@ -335,7 +333,7 @@
                 data: data,
             }).done(function(res) {
                 flashMessage(trans['articleremoved']);
-                relatedArticlesList.fnDeleteRow(element.parent().parent()[0]);
+                relatedArticlesList.fnDeleteRow(element.parent().parent().parent()[0]);
             });
         }
     };

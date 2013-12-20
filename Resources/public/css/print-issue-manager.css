@@ -74,3 +74,8 @@ button#load-articles-button {
 button.iframe {
     margin-top: 21px;
 }
+
+.content-box {
+    float:left; 
+    margin-left: 20px;
+}

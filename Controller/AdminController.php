@@ -31,9 +31,9 @@ class AdminController extends Controller
         $latestPrintIssues = $service->getLatestIssues(4);
 
         $iPadSection = $service->findIpadSection();
-
         krsort($mobileIssuesArticles);
-        $_SESSION['pim_allow_unpublished'] = true;
+        $session = $request->getSession();
+        $session->set('pim_allow_unpublished', true);
 
         $iPadLinkParams = array();
         foreach ($iPadSection as $value) {
@@ -170,17 +170,16 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/print-issue-manager/remove-article", options={"expose"=true})
+     * @Route("/admin/print-issue-manager/remove-article/{id}", options={"expose"=true})
      */
-    public function removeArticleAction(Request $request)
+    public function removeArticleAction(Request $request, $id)
     {
-        $articleNumber = $request->get('article_number');
         $contextBoxId = $request->get('context_box_id');
         $service =  $this->container->get('newscoop_print_issue_manager.service');
         $contextBoxArticles = $service->getContextBoxArticleList($contextBoxId);
 
         foreach ($contextBoxArticles as $key => $article) {
-            if ($article == $articleNumber) {
+            if ($article == $id) {
                 unset($contextBoxArticles[$key]);
             }
         }
