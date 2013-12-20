@@ -75,18 +75,34 @@
                             $('td:eq('+i+')', nRow).html('<button type="button" class="btn btn-danger btn-xs"><a href="'+Routing.generate('newscoop_printissuemanager_admin_removearticle')+'" data-article-id="'+aData[10]+'" data-article-id="'+aData[10]+'" data-language-id="'+aData[11]+'" class="remove">'+trans['delete']+'</a></button>');
                         }
 
+                        /*if(i == 3 && $('td:eq('+i+')', nRow).html() == 'iPad_Ad') {
+                            $('td:eq('+i+')', nRow).addClass('js-printstory').data('editable', false);
+                        }*/
+
                         if(i == 5) {
-                            $('td:eq('+i+')', nRow).addClass('js-printsection').data('editable', false);
+                            if ($('td:eq(3)', nRow).html() != 'iPad_Ad') {
+                                $('td:eq('+i+')', nRow).addClass('js-printsection').data('editable', false);
+                            } else {
+                                $('td:eq('+i+')', nRow).addClass('js-printsection').html('<i>disabled</i>');
+                            }
                         }
 
                         if(i == 6) {
-                            $('td:eq('+i+')', nRow).addClass('js-printstory').data('editable', false);
+                            if ($('td:eq(3)', nRow).html() != 'iPad_Ad') {
+                                $('td:eq('+i+')', nRow).addClass('js-printstory').data('editable', false);
+                            } else {
+                                $('td:eq('+i+')', nRow).addClass('js-printstory').html('<i>disabled</i>');
+                            }
                         }
 
                         if(i == 7) {
                             $('td:eq('+i+')', nRow).html('<input type="checkbox" class="js-prominent" name="prominent" value="1" />');
-                            if(aData[i] == true) {
-                                $('td:eq('+i+') input', nRow).attr('checked', true);
+                            if ($('td:eq(3)', nRow).html() != 'iPad_Ad') { 
+                                if(aData[i] == true) {
+                                    $('td:eq('+i+') input', nRow).attr('checked', true);
+                                }
+                            } else {
+                                $('td:eq('+i+') input', nRow).attr('disabled', true);
                             }
                         }
 
@@ -149,10 +165,16 @@
                 dataType: "json",
                 data: loadArticlesForm.serialize()
             }).done(function(res) {
-                printIssueManager.tableData = res.aaData;
-                printIssueManager.currentIssue = res.issue;
-                printIssueManager.utils.upadateTable($("table.issueArticles"), res);
-                flashMessage(trans['articlesloaded']);
+                try {
+                    printIssueManager.tableData = res.aaData;
+                    printIssueManager.currentIssue = res.issue;
+                    printIssueManager.utils.upadateTable($("table.issueArticles"), res);
+                    flashMessage(trans['articlesloaded']);
+                } catch (e) {
+                    flashMessage(trans['noarticles']);
+                }
+                
+                
             });
         },
         inlineEdit: function(element, addNewOne){
@@ -254,8 +276,8 @@
         hideInline: function(id) {
             var rowData = printIssueManager.dataToSave[id];
             var row = $("table.issueArticles tbody tr#"+id);
-
-            for (var i = 0; i < rowData.length; i++) {
+            try {
+                for (var i = 0; i < rowData.length; i++) {
                 if (rowData[i].name == "printsection") {
                     relatedArticlesList.fnUpdate( rowData[i].value, row[0], 5 );
                 }
@@ -267,7 +289,13 @@
                 if (rowData[i].name == "prominent") {
                     relatedArticlesList.fnUpdate( rowData[i].value, row[0], 7 );
                 }
+                }
+
+                return true;
+            } catch (e) {
+                  return false;
             }
+            
         },
         collectDataFromTable : function(table) {
             return relatedArticlesList.fnGetData();
@@ -393,8 +421,13 @@
     $("table.issueArticles tr a.save-one").live('click', function(e){
         e.stopPropagation();
         e.preventDefault();
-        printIssueManager.utils.hideInline($(this).data('contentBoxId'));
-        printIssueManager.utils.updateArticle($(this));
+
+        var result = printIssueManager.utils.hideInline($(this).data('contentBoxId'));
+        if (result) {
+            printIssueManager.utils.updateArticle($(this));
+        } else {
+            flashMessage(trans['inlinediterror'], 'error');
+        }
     });
 
     $("table.issueArticles tr a.remove").live('click', function(e){

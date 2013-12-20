@@ -47,6 +47,7 @@ class AdminController extends Controller
             'issues' => $mobileIssuesArticles,
             'latestPrintIssues' => $latestPrintIssues,
             'iPadLinkParams' => $iPadLinkParams,
+
         );
     }
 
@@ -59,50 +60,49 @@ class AdminController extends Controller
         $user = $this->container->get('user');
         $service =  $this->container->get('newscoop_print_issue_manager.service');
         $printdeskUser = $user->findOneBy(array('username' => 'printdesk'));
-        var_dump($request->get('context_box_id'));die;
 
         $existingArticles = array_values($service->getContextBoxArticleList($request->get('context_box_id')));
-die;
+
         // get last or two issues numbers
-        $latestIssues = $_POST['issues_range'];
+        $latestIssues = $request->get('issues_range');
         foreach ($latestIssues as $issue) {
             list($issueId, $language) = explode('_', $issue);
             $allowedIssues[] = $issueId;
         }
 
         if (empty($printdeskUser) || (!$printdeskUser)) {
-            new Response(json_encode(array()));
+            return new Response(json_encode(array()));
         }
 
         // those are all articles of type news or pending with creator PrintDesk
-        $printDescArticles = Article::GetArticles(null, null, null, null, null, false, array(
-            '(type = "news" OR type = "pending")',
-            'IdUser = '.$printdeskUser->getUserId()
-        ));
+        $printDescArticles = $service->getArticles($printdeskUser->getUserId());
 
         // switch print active within a fixed daterange
-        $printArticles = Article::GetList(array(
-            new ComparisonOperation('print', new Operator('is'), true)
-        ), null, null, 0, $count);
+        $attributes = $request->attributes->get('_newscoop_publication_metadata');
+        $printArticles = $em->getRepository('Newscoop\Entity\Article')
+            ->getArticles($attributes['alias']['publication_id'], 'print');
+
+        $printArticlesArray = array();
+        foreach ($printArticles as $key => $field) {
+            $printArticlesArray[$key] = $field;
+        }
 
         // plus all articles of type iPad_Ad with switch active on.
-        $ipadArticles = Article::GetList(array(
-            new ComparisonOperation('type', new Operator('is', 'string'), 'iPad_Ad'),
-            new ComparisonOperation('active', new Operator('is'), true),
-            new ComparisonOperation('weekly_issue', new Operator('is'), true),
-        ), null, null, 0, $count);
+        $ipadArticles = $service->processCustomField(array(
+            'type' => 'iPad_Ad',
+            'active' => true,
+            'weekly_issue' => true
+        ));
 
-
-        $mergedArticles = array_merge($printDescArticles, $printArticles, $ipadArticles);
+        $mergedArticles = array_merge($printDescArticles, $printArticlesArray, $ipadArticles);
         foreach($mergedArticles as $article) {
-            if (in_array($article->getIssueNumber(), $allowedIssues) || ($article->getType() == 'iPad_Ad')) {
+            if (in_array($article->getIssue()->getNumber(), $allowedIssues) || ($article->getType() == 'iPad_Ad')) {
                 $existingArticles[] = $article->getNumber();
             }
         }
 
-        $existingArticles = array_unique($existingArticles);
-        ContextBoxArticle::saveList($_POST['context_box_id'], $existingArticles);
-        $this->getissuearticlesAction($_POST['article_number'], $_POST['article_language']);
+        $service->saveList($request->get('context_box_id'), array_unique($existingArticles));
+        $this->getIssueArticlesAction($request, $request->get('article_number'), $request->get('article_language'));
     }
 
     /**
@@ -128,7 +128,7 @@ die;
                 'language' => $articleLanguage
             ));
 
-        $contextBox = $service->getContextBoxByIssueId($issue->getId());
+        $contextBox = $service->getContextBoxByIdOrIssueId(null, $issue->getId());
         $relatedArticles = $service->getRelatedArticles($issue);
         $items = $this->createList($relatedArticles);
 
@@ -174,7 +174,21 @@ die;
      */
     public function removeArticleAction(Request $request)
     {
+        $articleNumber = $request->get('article_number');
+        $contextBoxId = $request->get('context_box_id');
+        $service =  $this->container->get('newscoop_print_issue_manager.service');
+        $contextBoxArticles = $service->getContextBoxArticleList($contextBoxId);
 
+        foreach ($contextBoxArticles as $key => $article) {
+            if ($article == $articleNumber) {
+                unset($contextBoxArticles[$key]);
+            }
+        }
+
+        //reorder articles
+        $service->saveList($contextBoxId, $contextBoxArticles);
+
+        return new Response(json_encode(array('code' => true)));
     }
 
     /**
@@ -182,15 +196,83 @@ die;
      */
     public function saveArticlesAction(Request $request)
     {
+        $service =  $this->container->get('newscoop_print_issue_manager.service');
+        $em =  $this->container->get('em');;
+        if ($request->get('data')) {
+            foreach($request->get('data') as $article) {
+                foreach ($article as $key => $value) {
+                    $article[$article[$key]['name']] = $article[$key]['value'];
+                    unset($article[$key]);
+                }
 
+                $issue = $em->getRepository('Newscoop\Entity\Article')
+                    ->findOneBy(array(
+                        'number'=> $article['id'],
+                        'language' => $article['language']
+                    ));
+
+                if (isset($article['printsection'])) {
+                    $issue->setFieldData('printsection', $article['printsection']);
+                }
+
+                if (isset($article['printstory'])) {
+                    $issue->setFieldData('printstory', $article['printstory']);
+                }
+
+                if (isset($article['prominent'])) {
+                    if ($article['prominent'] == '1') {
+                        $issue->setFieldData('iPad_prominent', true);
+                    } else {
+                        $issue->setFieldData('iPad_prominent', false);
+                    }
+                }
+            }
+        } else {
+            $articleNumber = $request->get('id');
+            $articleLanguage = $request->get('language');
+            $issue = $em->getRepository('Newscoop\Entity\Article')
+                ->findOneBy(array(
+                    'number'=> $articleNumber,
+                    'language' => $articleLanguage
+                ));
+
+            if ($request->request->has('printsection')) {
+                $issue->setFieldData('printsection', $request->get('printsection'));
+            }
+
+            if ($request->request->has('printstory')) {
+                $issue->setFieldData('printstory', $request->get('printstory'));
+            }
+
+            if ($request->request->has('prominent')) {
+                if ($request->get('prominent') == '1') {
+                    $issue->setFieldData('iPad_prominent', true);
+                } else {
+                    $issue->setFieldData('iPad_prominent', false);
+                }
+            }
+        }
+
+        $em->flush();
+
+        return new Response(json_encode(array('code' => true)));
     }
 
     /**
      * @Route("/admin/print-issue-manager/update-order", options={"expose"=true})
      */
     public function updateOrderAction(Request $request)
-    {
+    {   
+        $service =  $this->container->get('newscoop_print_issue_manager.service');
+        $contextBoxId = $request->get('content_box_id');
+        $contextBoxArticles = $request->get('context_box_articles');
 
+        //reorder articles
+        if (count($contextBoxArticles) > 0) {
+            $service->saveList($contextBoxId, $contextBoxArticles);
+        }
+
+        $this->getIssueArticlesAction($request, $request->get('article_number'), $request->get('article_language'));
     }
 
     private function createList($relatedArticles)
@@ -200,10 +282,9 @@ die;
             foreach ($relatedArticles as $article) {
                 $relatedArticleInfo = array();
                 $relatedArticle = new \stdClass();
-
                 $relatedArticle->id = $article->getNumber();
                 $relatedArticle->Title = '<a href="/admin/articles/edit.php' . '?f_publication_id=' . $article->getPublicationId()
-                        . '&amp;f_issue_number=' . $article->getIssue()->getNumber() . '&amp;f_section_number=' . $article->getSection()->getNumber()
+                        . '&amp;f_issue_number=' . $article->getSection()->getIssue()->getNumber() . '&amp;f_section_number=' . $article->getSection()->getNumber()
                         . '&amp;f_article_number=' . $article->getNumber() . '&amp;f_language_id=' . $article->getLanguageId()
                         . '&amp;f_language_selected=' . $article->getLanguageId().'">'.$article->getTitle().'</a>';
                 $relatedArticle->ArticleType = $article->getType();
@@ -241,19 +322,6 @@ die;
                 $issueNumber = $article->getIssue()->getNumber();
                 $sectionNumber = $article->getSection()->getNumber();
                 $languageId = $article->getLanguageId();
-
-                $metaArticle = new \MetaArticle((int) $languageId, $article->getNumber());
-                $metaPublication = new \MetaPublication($publicationId);
-                $metaIssue = new \MetaIssue($publicationId, $languageId, $issueNumber);
-                $metaSection = new \MetaSection($publicationId, $issueNumber, $languageId, $sectionNumber);
-
-                $url = \CampSite::GetURIInstance();
-                $url->publication = $metaPublication;
-                $url->issue = $metaIssue;
-                $url->section = $metaSection;
-                $url->article = $metaArticle;
-                $frontendURI = $url->getURI('article');
-                $relatedArticle->Uri = $frontendURI;
 
                 $relatedArticle->Preview = /*array(
                     'module' => 'api',

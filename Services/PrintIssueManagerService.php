@@ -11,7 +11,8 @@ namespace Newscoop\PrintIssueManagerBundle\Services;
 use Doctrine\ORM\EntityManager,
     Newscoop\Entity\Article,
     Newscoop\Entity\Language,
-    Newscoop\Entity\Topic;
+    Newscoop\Entity\Topic,
+    Newscoop\PrintIssueManagerBundle\Entity\ContextArticle;
 
 /**
  * Print Issue Manager service
@@ -33,7 +34,7 @@ class PrintIssueManagerService
     public function getRelatedArticles(Article $article)
     {
         $related = array();
-        $contextBox = $this->getContextBoxByIssueId($article->getId());
+        $contextBox = $this->getContextBoxByIdOrIssueId(null, $article->getId());
         $articleIds = $this->getContextBoxArticleList($contextBox->getId());
         foreach($articleIds as $articleId) {
             $related[] = $this->find($article->getLanguage(), $articleId);
@@ -184,15 +185,26 @@ class PrintIssueManagerService
         return $section;
     }
 
-    public function getContextBoxByIssueId($id) 
-    {
-        $contextBox = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextBox')
-            ->createQueryBuilder('c')
-            ->where('c.articleNumber = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getSingleResult();
-
+    public function getContextBoxByIdOrIssueId($boxId = null, $articleNumber = null) 
+    {   
+        if (is_numeric($boxId) && $boxId > 0) {
+            $contextBox = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextBox')
+                ->createQueryBuilder('c')
+                ->where('c.id = :id')
+                ->setParameter('id', $boxId)
+                ->getQuery()
+                ->getSingleResult();
+        } else {
+            if(is_numeric($articleNumber) && $articleNumber > 0) {
+                $contextBox = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextBox')
+                    ->createQueryBuilder('c')
+                    ->where('c.articleNumber = :id')
+                    ->setParameter('id', $articleNumber)
+                    ->getQuery()
+                    ->getSingleResult();
+            }
+        }
+        
         return $contextBox;
     }
 
@@ -226,6 +238,100 @@ class PrintIssueManagerService
         } catch (\Exception $e) {
             return new \Exception('Error occured while fetching ContextArticle entity data!');
         }
+    }
+
+    public function saveList($contextListId, $articlesNumbers) {
+        $this->removeList($contextListId);
+        $this->insertList($contextListId, $articlesNumbers);
+    }
+
+    public function removeList($contextListId) 
+    {
+        try {
+            $contextBoxes = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextArticle')
+                ->findBy(array(
+                    'contextListId' => $contextListId,
+                ));
+
+            foreach ($contextBoxes as $contextBox) {
+                $this->em->remove($contextBox);
+            }
+            
+            $this->em->flush();
+            
+        } catch (\Exception $e) {
+            return new \Exception('Error occured while removing context list');
+        }
+    }
+
+    public function insertList($contextBoxId, $articlesNumbers) 
+    {
+        try {
+
+            foreach($articlesNumbers as $articleNumber) {
+                $contextList = new ContextArticle();
+                $contextList->setContextListId($contextBoxId);
+                $contextList->setArticleNumber($articleNumber);
+                $this->em->persist($contextList);
+                $this->em->flush();
+            }
+        } catch (\Exception $e) {
+            return new \Exception('Error occured while creating new context list');
+        }
+    }
+
+    public function getArticles($userId)
+    {   
+        try {
+            $articles = $this->getArticleRepository()
+                ->createQueryBuilder('a')
+                ->where('a.type = :news OR a.type = :pending')
+                ->andWhere('a.creator = :userId')
+                ->setParameters(array(
+                    'news' => 'news',
+                    'pending' => 'pending',
+                    'userId' => $userId
+                ))
+                ->orderBy('a.number', 'desc')
+                ->getQuery()
+                ->getResult();
+
+            return $articles;
+
+        } catch(\Exception $e) {
+            return new \Exception('Error occured while fetching articles by printdesk user');
+        }
+    }
+
+    public function processCustomField(array $params)
+    {   
+        try {
+            $articleTypes = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\IPadAdArticleType')
+                ->createQueryBuilder('i')
+                ->select('i', 'a')
+                ->innerJoin('i.article', 'a')
+                ->where('a.type = :type')
+                ->andWhere('i.active = :active')
+                ->andWhere('i.weeklyIssue = :weekly')
+                ->setParameters(array(
+                    'type' => $params['type'],
+                    'active' => $params['active'],
+                    'weekly' => $params['weekly_issue']
+                ))
+                ->getQuery()
+                ->getResult();
+
+            $articlesArray = array();
+            foreach ($articleTypes as $key => $value) {
+                $articlesArray[] = $value->getArticle();
+            }
+
+            return $articlesArray;
+
+        } catch (\Exception $e) {
+            return new \Exception('Error occured while fetching articles based on article type data');
+        } 
+
     }
 
     /**

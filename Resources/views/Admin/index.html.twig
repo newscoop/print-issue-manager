@@ -6,10 +6,8 @@
 <link rel="stylesheet" href="{{ asset('/bundles/newscoopnewscoop/css/bootstrap.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('/bundles/newscoopnewscoop/css/DT_bootstrap.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('/bundles/newscoopprintissuemanager/css/print-issue-manager.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('/js/select2-3.4.1/select2.css') }}" />
 {% endblock %}
 {% block admin_scripts %}
-<script src="{{ asset('/js/select2-3.4.1/select2.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/bundles/newscoopnewscoop/js/DT_bootstrap.js') }}"></script>
 
 {% endblock %}
@@ -24,7 +22,7 @@
                 <option>{{ 'plugin.printissuemanager.label.noissues'|trans }}</option>
             {% else %}
                 {% for article in issues %}
-                <option data-number="{{ article.number }}" data-language="{{ article.languageId }}" value="{{ article.number }}_{{ article.languageId }}" data-content-box-href="">{{ article.name }}</option>
+                <option data-number="{{ article.number }}" data-language="{{ article.languageId }}" value="{{ article.number }}_{{ article.languageId }}" data-content-box-href="/admin/articles/context_box/popup.php?f_publication_id={{ article.publicationId }}&amp;f_issue_number={{ article.issue.number }}&amp;f_section_number={{ article.section.number }}&amp;f_article_number={{ article.number }}&amp;f_language_id={{ article.languageId }}&amp;f_language_selected={{ article.languageId }}">{{ article.name }}</option>
                 {% endfor %}
             {% endif %}
         </select>
@@ -33,7 +31,7 @@
         <div class="ipad-section">
             <h5>
                 {{ 'plugin.printissuemanager.label.createnew'|trans }}
-                <button type="button" class="btn btn-primary"><a href="/admin/articles/?f_publication_id={{ iPadLinkParams.publicationId}}&f_issue_number={{ iPadLinkParams.issueId}}&f_section_number={{ iPadLinkParams.number}}&f_language_id={{ iPadLinkParams.languageId}}">To the category iPad</a></button>
+                <button type="button" class="btn btn-primary"><a href="/admin/articles/?f_publication_id={{ iPadLinkParams.publicationId}}&f_issue_number={{ iPadLinkParams.issueId}}&f_section_number={{ iPadLinkParams.number}}&f_language_id={{ iPadLinkParams.languageId}}">{{ 'plugin.printissuemanager.label.gotoipad'|trans }}</a></button>
             </h5>
         </div> 
     {% endif %}
@@ -45,12 +43,12 @@
         <input type="hidden" name="article_number" class="article_number" value="">
         <input type="hidden" name="article_language" class="article_language" value="">
         <fieldset class="buttons">
-            <h4 style="float:left" class="choosen-issue-name">{{ 'plugin.printissuemanager.msg.loading'|trans }}</h3>
+            <h4 class="choosen-issue-name">{{ 'plugin.printissuemanager.msg.loading'|trans }}</h3>
 
             <div style="float:right;">
-                <button style="float:left; margin: 0px 10px;" type="submit" name="load-aricles" id="load-articles-button" class="btn btn-default">{{ 'plugin.printissuemanager.label.loadarticles'|trans }}</button>
+                <button type="submit" name="load-aricles" id="load-articles-button" class="btn btn-default">{{ 'plugin.printissuemanager.label.loadarticles'|trans }}</button>
                 <div class="issues-range" style="float:left">
-                    <label style="display: inline-block; float: left; margin-right: 5px; margin-top: 3px;" for="issues_range">{{ 'plugin.printissuemanager.label.from'|trans }} </label>
+                    <label for="issues_range">{{ 'plugin.printissuemanager.label.from'|trans }} </label>
                     <select name="issues_range[]" id="issues-range" style="width:250px; margin-left: 35px;" multiple="multiple" class="aaselect form-control">
                     {% set i = 0 %}
                     {% for issue in latestPrintIssues %}
@@ -86,14 +84,27 @@
         </thead>
         <tbody></tbody>
     </table>
+
+    <form method="post" action="{{ path('newscoop_printissuemanager_admin_savearticles') }}" class="saveArticles">
+        <input type="hidden" name="context_box_articles" class="context_box_articles" value="">
+        <input type="hidden" name="article_number" class="article_number" value="">
+        <fieldset class="buttons">
+            <p class="reordering-tip-label"><span class="label label-info">{{ 'plugin.printissuemanager.label.tip'|trans }}:</span> {{ 'plugin.printissuemanager.label.tipmsg'|trans }}</p>
+            <input id="button-set-order" style="float:right" class="btn btn-default" type="submit" name="Save" value="{{ 'plugin.printissuemanager.btn.saveall'|trans }}">
+        </fieldset>
+    </form>
+
+    <div id="formUpdateContainer" style="display:none">
+        <form method="post" action="#" class="updateSingle">
+            <input type="hidden" class="js-id" name="id" value="">
+            <input type="hidden" class="js-language" name="language" value="">
+            <input type="hidden" class="js-printsection" name="printsection" value="">
+            <input type="hidden" class="js-printstory" name="printstory" value="">
+            <input type="hidden" class="js-prominent" name="prominent" value="">
+        </form>
+    </div>
     {% endif %}
 </div>
-<script type="text/javascript">
-$(document).ready(function() {
-    /*$('select.mobile_issues').select2();
-    $('select#issues-range').select2();*/
-});
-</script>
 <script type="text/javascript">
     var trans = {
         'frozen': '{{ 'plugin.printissuemanager.label.frozen'|trans }}',
@@ -111,9 +122,11 @@ $(document).ready(function() {
         'backtolist': '{{ 'plugin.printissuemanager.label.backtolist'|trans }}',
         'chooseprintstory': '{{ 'plugin.printissuemanager.label.chooseprintstory'|trans }}',
         'addnewone': '{{ 'plugin.printissuemanager.label.addnewone'|trans }}',
-        'articlesaved': '{{ 'plugin.printissuemanager.label.articlesaved'|trans }}',
+        'articlesaved': '{{ 'plugin.printissuemanager.msg.saved'|trans }}',
         'articleremoved': '{{ 'plugin.printissuemanager.label.articleremoved'|trans }}',
         'isfrozen': '{{ 'plugin.printissuemanager.label.isfrozen'|trans }}',
+        'inlinediterror': '{{ 'plugin.printissuemanager.label.inlineediterror'|trans }}',
+        'noarticles': '{{ 'plugin.printissuemanager.label.noarticles'|trans }}',
     };
 </script>
 <script type="text/javascript" src="{{ asset('/bundles/newscoopprintissuemanager/js/print-issue-manager.js') }}"></script>

@@ -19,10 +19,6 @@ form#choose-issue {
     float:right;
 }
 
-.ipad-section h5 {
-    margin-right: 40px;
-}
-
 .dataTables_wrapper {
     margin: 0;
 }
@@ -39,4 +35,42 @@ form#choose-issue {
 
 #inline-select, #inline-input {
     width: auto
+}
+
+fieldset.buttons {
+    margin: 0px;
+}
+
+.reordering-tip-label {
+    float:left; 
+    margin-top: 4px;
+}
+
+.js-printstory i {
+    color: #B4B3B3;
+}
+
+.js-printsection i {
+    color: #B4B3B3;
+}
+
+h4.choosen-issue-name {
+    float:left; 
+    margin-top: 27px;
+}
+
+button#load-articles-button {
+    float:left; 
+    margin: 21px 10px;
+}
+
+.issues-range label {
+    display: inline-block; 
+    float: left; 
+    margin-right: 5px; 
+    margin-top: 30px;
+}
+
+button.iframe {
+    margin-top: 21px;
 }
