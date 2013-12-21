@@ -71,7 +71,9 @@ class AdminController extends Controller
         }
 
         if (empty($printdeskUser) || (!$printdeskUser)) {
-            return new Response(json_encode(array()));
+            $this->get('session')->getFlashBag()->add('error', $translator->trans('plugin.printissuemanager.msg.noprindeskuser'));
+
+            return $this->redirect($this->generateUrl('newscoop_printissuemanager_admin_index'));
         }
 
         // those are all articles of type news or pending with creator PrintDesk

@@ -35,6 +35,12 @@
 </script>
 {% endblock %}
 {% block admin_content %}
+{% for flashMessage in app.session.flashbag.get('error') %}
+<div class="alerts alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{ flashMessage }}
+</div>
+{% endfor %}
 {% if iPadLinkParams is empty %}
 <h5><div class="alert alert-info">{{ 'plugin.printissuemanager.msg.ipaderror'|trans }}</div></h5>
 {% endif %}

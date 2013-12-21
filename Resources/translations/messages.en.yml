@@ -46,6 +46,7 @@ plugin:
       error: "Could not save."
       ipaderror: "iPad section does not exists. Create iPad section first to be able to add mobile issues."
       loading: "Loading..."
+      noprintdeskuser: "No printdesk user defined. Create 'printdesk' user."
     table:
       info: "Showing _START_ to _END_ of _TOTAL_ entries"
       noentries: "No entries to show"
