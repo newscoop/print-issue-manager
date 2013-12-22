@@ -277,7 +277,7 @@ class AdminController extends Controller
             $service->saveList($contextBoxId, $contextBoxArticles);
         }
 
-        $this->getIssueArticlesAction($request, $request->get('article_number'), $request->get('article_language'));
+        return $this->getIssueArticlesAction($request, $request->get('article_number'), $request->get('article_language'));
     }
 
     private function createList($relatedArticles)
