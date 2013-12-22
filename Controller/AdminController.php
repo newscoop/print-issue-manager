@@ -72,7 +72,7 @@ class AdminController extends Controller
         }
 
         if (empty($printdeskUser) || (!$printdeskUser)) {
-            $this->get('session')->getFlashBag()->add('error', $translator->trans('plugin.printissuemanager.msg.noprindeskuser'));
+            $this->get('session')->getFlashBag()->add('error', $translator->trans('plugin.printissuemanager.msg.noprintdeskuser'));
 
             return $this->redirect($this->generateUrl('newscoop_printissuemanager_admin_index'));
         }
