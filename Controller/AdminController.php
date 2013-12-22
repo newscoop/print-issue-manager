@@ -57,6 +57,7 @@ class AdminController extends Controller
     public function loadArticlesAction(Request $request)
     {
         $em = $this->container->get('em');
+        $translator = $this->container->get('translator');
         $user = $this->container->get('user');
         $service =  $this->container->get('newscoop_print_issue_manager.service');
         $printdeskUser = $user->findOneBy(array('username' => 'printdesk'));
