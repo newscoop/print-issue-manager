@@ -35,7 +35,7 @@ plugin:
       tip: "Tip"
       tipmsg: "Reordering will clear all not saved inline changes."
       noarticles: "No articles to be loaded."
-      notypes: "'iPad_Ad' and/or 'mobile_issue' article types does not exist. Create them manually."
+      notypes: "'iPad_Ad' and/or 'mobile_issue' article types does not exist. Create them manually. Please see plugin documentation."
     btn:
       addarticles: "Add new articles"
       delete: "Delete"
@@ -45,7 +45,7 @@ plugin:
     msg:
       saved: "Successfully saved."
       error: "Could not save."
-      ipaderror: "iPad section does not exists. Create iPad section first to be able to add mobile issues."
+      ipaderror: "iPad section does not exists. Create 'iPad' section first to be able to add mobile issues."
       loading: "Loading..."
       noprintdeskuser: "No printdesk user defined. Create 'printdesk' user."
     table:

@@ -196,6 +196,9 @@ class ArticleTypeConfigurationService
         } elseif ($name == 'news') {
             $this->populateArticleTypeMetadata($name, $this->newsFieldArray);
             $this->extendArticleTypeTable($this->newsFieldArray);
+        } elseif ($name == 'blog') {
+            $this->populateArticleTypeMetadata($name, $this->newsFieldArray);
+            $this->extendArticleTypeTable($this->newsFieldArray);
         } else {
             $this->populateArticleTypeMetadata($name, $this->mobileIssueFieldArray);
             $this->createArticleTypeTable($name);
@@ -209,10 +212,13 @@ class ArticleTypeConfigurationService
     public function remove($name)
     {   
         $this->setName($name);
-        $this->removeArticleTypeTable();
         if ($name == 'iPad_Ad') {
+            $this->removeArticleTypeTable();
             $this->removeArticleTypeMetadata($name, $this->iPadFieldArray);
+        } elseif ($name == 'blog') {
+            $this->removeArticleTypeMetadata($name, $this->newsFieldArray);
         } else {
+            $this->removeArticleTypeTable();
             $this->removeArticleTypeMetadata($name, $this->mobileIssueFieldArray);
         }
         
@@ -271,6 +277,17 @@ class ArticleTypeConfigurationService
     }
 
     /**
+     * Removes article type fields
+     * NOTE: This ia a hack, should be using entity manager
+     */
+    private function removeArticleTypeFields($fieldArray) {
+        $tableName = $this->getTableName();
+        foreach ($fieldArray as $key => $value) {
+            $this->connection->exec('ALTER TABLE  `'.$tableName.'` DROP  `F'.$key.'`');
+        }
+    }
+
+    /**
      * Creates entries in articletypemetedata table for current article type
      * NOTE: This already uses entities, but should probably go in a better place
      */
@@ -282,7 +299,7 @@ class ArticleTypeConfigurationService
         $newswireType = new \Newscoop\Entity\ArticleType();
         $newswireType->setName($name);
 
-        if ($name != 'news') {
+        if ($name != 'news' && $name != 'blog') {
             $this->em->persist($newswireType);
         }
         
@@ -313,7 +330,7 @@ class ArticleTypeConfigurationService
             } else {
                 $articleField->setIsContentField(0);
             }
-//var_dump($articleField);die;
+
             $this->em->persist($articleField);
             unset($articleField);
             $weight++;
@@ -322,7 +339,7 @@ class ArticleTypeConfigurationService
     }
 
     /**
-     * Creates entries in articletypemetedata table for current article type
+     * Removes entries in articletypemetedata table for current article type
      * NOTE: This already uses entities, but should probably go in a better place
      */
     private function removeArticleTypeMetadata($name, $fieldArray)
@@ -335,9 +352,11 @@ class ArticleTypeConfigurationService
             ->findByName($name);
 
         foreach ($articleTypes as $articleType) {
-            $this->em->remove($articleType);
+            if ($articleType->getFieldName() != 'NULL') {
+                $this->em->remove($articleType);
+            }
         }
-
+        $this->removeArticleTypeFields($fieldArray);
         $this->em->flush();
     }
 }

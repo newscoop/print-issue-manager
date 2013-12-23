@@ -37,6 +37,7 @@ class LifecycleSubscriber implements EventSubscriberInterface
         $this->artcileTypeService->create('mobile_issue');
         $this->artcileTypeService->create('iPad_Ad');
         $this->artcileTypeService->create('news');
+        $this->artcileTypeService->create('blog');
     }
 
     public function update(GenericEvent $event)
@@ -56,6 +57,8 @@ class LifecycleSubscriber implements EventSubscriberInterface
         // Remove articletypes
         $this->artcileTypeService->remove('iPad_Ad');
         $this->artcileTypeService->remove('mobile_issue');
+        $this->artcileTypeService->remove('news');
+        $this->artcileTypeService->remove('blog');
     }
 
     public static function getSubscribedEvents()
