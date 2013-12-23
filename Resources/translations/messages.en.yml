@@ -35,6 +35,7 @@ plugin:
       tip: "Tip"
       tipmsg: "Reordering will clear all not saved inline changes."
       noarticles: "No articles to be loaded."
+      notypes: "'iPad_Ad' and/or 'mobile_issue' article types does not exist. Create them manually."
     btn:
       addarticles: "Add new articles"
       delete: "Delete"

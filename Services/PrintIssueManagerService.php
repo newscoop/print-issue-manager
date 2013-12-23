@@ -107,6 +107,31 @@ class PrintIssueManagerService
     }
 
     /**
+     * Find types
+     *
+     * @param string $type
+     *
+     * @return bool
+     */
+    public function checkArticleType($type)
+    {   
+        $articleType = $this->em->getRepository('Newscoop\Entity\ArticleType')
+            ->createQueryBuilder('a')
+            ->andWhere('a.name = :type')
+            ->getQuery()
+            ->setParameters(array(
+                'type' => $type,
+            ))
+            ->getResult();
+
+        if ($articleType) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get articles by mobile_issue type
      *
      * @param string $type

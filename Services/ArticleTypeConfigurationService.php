@@ -190,10 +190,12 @@ class ArticleTypeConfigurationService
     {   
         $this->setName($name);
         if ($name == 'iPad_Ad') {
-            $this->extendArticleTypeTable($this->newsFieldArray);
             $this->populateArticleTypeMetadata($name, $this->iPadFieldArray);
             $this->createArticleTypeTable($name);
             $this->extendArticleTypeTable($this->iPadFieldArray);
+        } elseif ($name == 'news') {
+            $this->populateArticleTypeMetadata($name, $this->newsFieldArray);
+            $this->extendArticleTypeTable($this->newsFieldArray);
         } else {
             $this->populateArticleTypeMetadata($name, $this->mobileIssueFieldArray);
             $this->createArticleTypeTable($name);
@@ -248,7 +250,7 @@ class ArticleTypeConfigurationService
         $types = \ArticleTypeField::DatabaseTypes(null, null);
         $articleTypeFields = $this->getArticleTypeConfiguration($fieldArray);
 
-        foreach ($articleTypeFields AS $fieldId => $fieldData) {
+        foreach ($articleTypeFields as $fieldId => $fieldData) {
             $query .= "ALTER TABLE `" . $tableName . "` ADD COLUMN `F"
                 . $fieldId . '` ' . $types[$fieldData['type']] .';';
         }
@@ -276,16 +278,17 @@ class ArticleTypeConfigurationService
     {
         $fieldArray = array();
         $weight = 1;
-
+        
         $newswireType = new \Newscoop\Entity\ArticleType();
         $newswireType->setName($name);
 
-        $this->em->persist($newswireType);
+        if ($name != 'news') {
+            $this->em->persist($newswireType);
+        }
+        
 
         $fieldArray = $this->getArticleTypeConfiguration($customfieldArray);
-
         foreach ($fieldArray as $fieldID => $fieldParams) {
-
             $articleField = new \Newscoop\Entity\ArticleTypeField();
             $articleField->setName($fieldID);
             $articleField->setArticleType($newswireType);
@@ -310,7 +313,7 @@ class ArticleTypeConfigurationService
             } else {
                 $articleField->setIsContentField(0);
             }
-
+//var_dump($articleField);die;
             $this->em->persist($articleField);
             unset($articleField);
             $weight++;

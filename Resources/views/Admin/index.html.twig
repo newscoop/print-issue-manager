@@ -43,9 +43,9 @@
 {% endfor %}
 {% if iPadLinkParams is empty %}
 <h5><div class="alert alert-info">{{ 'plugin.printissuemanager.msg.ipaderror'|trans }}</div></h5>
-{% endif %}
+{% else %}
 <div class="plugin-container">
-    {% if iPadLinkParams %} 
+    {% if typeIPadExists and typeMobileExists %}
     <form id="choose-issue" action="" method="POST">
         <select class="mobile_issues aaselect form-control" style="width: 300px;">
             {% if issues is empty %}
@@ -63,7 +63,6 @@
                 <button type="button" class="btn btn-primary"><a href="/admin/articles/?f_publication_id={{ iPadLinkParams.publicationId}}&f_issue_number={{ iPadLinkParams.issueId}}&f_section_number={{ iPadLinkParams.number}}&f_language_id={{ iPadLinkParams.languageId}}">{{ 'plugin.printissuemanager.label.gotoipad'|trans }}</a></button>
             </h5>
         </div> 
-    {% endif %}
     <div style="clear:both"></div>
     {% if issues is not empty %}
     <hr />
@@ -134,5 +133,11 @@
     </div>
     <script type="text/javascript" src="{{ asset('/bundles/newscoopprintissuemanager/js/print-issue-manager.js') }}"></script>
     {% endif %}
+    {% else %}
+    <div class="alerts alert-danger alert-dismissable">
+        {{ 'plugin.printissuemanager.label.notypes'|trans }}
+    </div>
+    {% endif %}
 </div>
+{% endif %}
 {% endblock %}

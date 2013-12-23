@@ -26,7 +26,8 @@ class AdminController extends Controller
     {   
         $service = $this->container->get('newscoop_print_issue_manager.service');
         $em = $this->container->get('em');
-
+        $typeIPadExists = $service->checkArticleType('iPad_Ad');
+        $typeMobileExists = $service->checkArticleType(self::MOBILE_ISSUE);
         $mobileIssuesArticles = $service->getMobileIssues(self::MOBILE_ISSUE);
         $latestPrintIssues = $service->getLatestIssues(4);
 
@@ -44,6 +45,8 @@ class AdminController extends Controller
         }
 
         return array(
+            'typeIPadExists' => $typeIPadExists,
+            'typeMobileExists' => $typeMobileExists,
             'issues' => $mobileIssuesArticles,
             'latestPrintIssues' => $latestPrintIssues,
             'iPadLinkParams' => $iPadLinkParams,
