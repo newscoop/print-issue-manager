@@ -86,15 +86,12 @@ class AdminController extends Controller
         $printDescArticles = $service->getArticles($printdeskUser->getUserId());
 
         // switch print active within a fixed daterange
-        $attributes = $request->attributes->get('_newscoop_publication_metadata');
-        $printArticles = $em->getRepository('Newscoop\Entity\Article')
-            ->getArticles($attributes['alias']['publication_id'], 'print');
-
+        $printArticles = $service->processPrintSwitchField(1);
         $printArticlesArray = array();
         foreach ($printArticles as $key => $field) {
             $printArticlesArray[$key] = $field;
         }
-
+        
         // plus all articles of type iPad_Ad with switch active on.
         $ipadArticles = $service->processCustomField(array(
             'type' => 'iPad_Ad',
@@ -104,13 +101,13 @@ class AdminController extends Controller
 
         $mergedArticles = array_merge($printDescArticles, $printArticlesArray, $ipadArticles);
         foreach($mergedArticles as $article) {
-            if (in_array($article->getIssue()->getNumber(), $allowedIssues) || ($article->getType() == 'iPad_Ad')) {
+            if (in_array($article->getSection()->getIssue()->getNumber(), $allowedIssues) || ($article->getType() == 'iPad_Ad')) {
                 $existingArticles[] = $article->getNumber();
             }
         }
 
         $service->saveList($request->get('context_box_id'), array_unique($existingArticles));
-        $this->getIssueArticlesAction($request, $request->get('article_number'), $request->get('article_language'));
+        return $this->getIssueArticlesAction($request, $request->get('article_number'), $request->get('article_language'));
     }
 
     /**

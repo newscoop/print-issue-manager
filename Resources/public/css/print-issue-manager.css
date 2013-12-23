@@ -33,10 +33,6 @@ form#choose-issue {
     color: #FFFFFF;
 }
 
-#inline-select, #inline-input {
-    width: auto
-}
-
 fieldset.buttons {
     margin: 0px;
 }

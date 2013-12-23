@@ -109,6 +109,30 @@ class ArticleTypeConfigurationService
             'entryMethod' => 'getIPadProminent',
             'type' => 'switch'
         ),
+        'print' => array(
+            'entryMethod' => 'getPrint',
+            'type' => 'switch'
+        ),
+    );
+
+    /**
+     * Configuration array for articleTypeField
+     *
+     * @var array
+     */
+    private $blogFieldArray = array(
+        'printsection' => array(
+            'entryMethod' => 'getPrintsection',
+            'type' => 'text', 'max_size' => 255
+        ),
+        'printstory' => array(
+            'entryMethod' => 'getPrintstory',
+            'type' => 'text', 'max_size' => 255
+        ),
+        'iPad_prominent' => array(
+            'entryMethod' => 'getIPadProminent',
+            'type' => 'switch'
+        ),
     );
 
     /**
@@ -197,8 +221,8 @@ class ArticleTypeConfigurationService
             $this->populateArticleTypeMetadata($name, $this->newsFieldArray);
             $this->extendArticleTypeTable($this->newsFieldArray);
         } elseif ($name == 'blog') {
-            $this->populateArticleTypeMetadata($name, $this->newsFieldArray);
-            $this->extendArticleTypeTable($this->newsFieldArray);
+            $this->populateArticleTypeMetadata($name, $this->blogFieldArray);
+            $this->extendArticleTypeTable($this->blogFieldArray);
         } else {
             $this->populateArticleTypeMetadata($name, $this->mobileIssueFieldArray);
             $this->createArticleTypeTable($name);
@@ -216,7 +240,7 @@ class ArticleTypeConfigurationService
             $this->removeArticleTypeTable();
             $this->removeArticleTypeMetadata($name, $this->iPadFieldArray);
         } elseif ($name == 'blog') {
-            $this->removeArticleTypeMetadata($name, $this->newsFieldArray);
+            $this->removeArticleTypeMetadata($name, $this->blogFieldArray);
         } else {
             $this->removeArticleTypeTable();
             $this->removeArticleTypeMetadata($name, $this->mobileIssueFieldArray);

@@ -196,6 +196,11 @@ class PrintIssueManagerService
         return $issues;
     }
 
+    /**
+     * Find iPad section
+     *
+     * @return string
+     */
     public function findIpadSection() 
     {
         $section = $this->getSectionRepository()
@@ -210,6 +215,14 @@ class PrintIssueManagerService
         return $section;
     }
 
+    /**
+     * Get context box by id or issue id(article number)
+     *
+     * @param string $boxId
+     * @param string $articleNumber
+     *
+     * @return int
+     */
     public function getContextBoxByIdOrIssueId($boxId = null, $articleNumber = null) 
     {   
         if (is_numeric($boxId) && $boxId > 0) {
@@ -238,7 +251,7 @@ class PrintIssueManagerService
      *
      * @param int $id
      *
-     * @return array
+     * @return array|exception
      */
     public function getContextBoxArticleList($id)
     {   
@@ -265,11 +278,26 @@ class PrintIssueManagerService
         }
     }
 
+    /**
+     * Saves context list
+     *
+     * @param string $contextListId
+     * @param array $articleNumbers
+     *
+     * @return void
+     */
     public function saveList($contextListId, $articlesNumbers) {
         $this->removeList($contextListId);
         $this->insertList($contextListId, array_unique($articlesNumbers));
     }
 
+    /**
+     * Removes context list
+     *
+     * @param string $contextListId
+     *
+     * @return void|exception
+     */
     public function removeList($contextListId) 
     {
         try {
@@ -289,6 +317,14 @@ class PrintIssueManagerService
         }
     }
 
+    /**
+     * Inserts new context list
+     *
+     * @param string $contextBoxId
+     * @param string $articleNumber
+     *
+     * @return void|exception
+     */
     public function insertList($contextBoxId, $articlesNumbers) 
     {
         try {
@@ -304,6 +340,13 @@ class PrintIssueManagerService
         }
     }
 
+    /**
+     * Gets artciles by user id
+     *
+     * @param int $userId
+     *
+     * @return Newscoop\Entity\Article|exception
+     */
     public function getArticles($userId)
     {   
         try {
@@ -327,6 +370,13 @@ class PrintIssueManagerService
         }
     }
 
+    /**
+     * Processes article types custom fields (X tables)
+     *
+     * @param array $params
+     *
+     * @return array|exception
+     */
     public function processCustomField(array $params)
     {   
         try {
@@ -336,12 +386,8 @@ class PrintIssueManagerService
                 ->innerJoin('i.article', 'a')
                 ->where('a.type = :type')
                 ->andWhere('i.active = :active')
-                ->andWhere('i.weeklyIssue = :weekly')
-                ->setParameters(array(
-                    'type' => $params['type'],
-                    'active' => $params['active'],
-                    'weekly' => $params['weekly_issue']
-                ))
+                ->andWhere('i.weeklyIssue = :weekly_issue')
+                ->setParameters($params)
                 ->getQuery()
                 ->getResult();
 
@@ -355,7 +401,37 @@ class PrintIssueManagerService
         } catch (\Exception $e) {
             return new \Exception('Error occured while fetching articles based on article type data');
         } 
+    }
 
+    /**
+     * Processes articles with print switch
+     *
+     * @param int $switch
+     *
+     * @return array|exception
+     */
+    public function processPrintSwitchField($switch)
+    {   
+        try {
+            $articleTypes = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\NewsArticleType')
+                ->createQueryBuilder('i')
+                ->select('i', 'a')
+                ->innerJoin('i.article', 'a')
+                ->where('i.print = :type')
+                ->setParameter('type', $switch)
+                ->getQuery()
+                ->getResult();
+
+            $articlesArray = array();
+            foreach ($articleTypes as $key => $value) {
+                $articlesArray[] = $value->getArticle();
+            }
+
+            return $articlesArray;
+
+        } catch (\Exception $e) {
+            return new \Exception('Error occured while fetching articles based on article type data');
+        } 
     }
 
     /**
