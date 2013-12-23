@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminController extends Controller
 {
     const MOBILE_ISSUE = "mobile_issue";
+    const IPAD_AD = "iPad_Ad";
 
     /**
      * @Route("/admin/print-issue-manager")
@@ -26,7 +27,7 @@ class AdminController extends Controller
     {   
         $service = $this->container->get('newscoop_print_issue_manager.service');
         $em = $this->container->get('em');
-        $typeIPadExists = $service->checkArticleType('iPad_Ad');
+        $typeIPadExists = $service->checkArticleType(self::IPAD_AD);
         $typeMobileExists = $service->checkArticleType(self::MOBILE_ISSUE);
         $mobileIssuesArticles = $service->getMobileIssues(self::MOBILE_ISSUE);
         $latestPrintIssues = $service->getLatestIssues(4);
@@ -45,6 +46,7 @@ class AdminController extends Controller
         }
 
         return array(
+            'iPadAdName' => self::IPAD_AD,
             'typeIPadExists' => $typeIPadExists,
             'typeMobileExists' => $typeMobileExists,
             'issues' => $mobileIssuesArticles,

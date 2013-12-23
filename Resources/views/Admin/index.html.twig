@@ -10,7 +10,8 @@
 {% block admin_scripts %}
 <script type="text/javascript" src="{{ asset('/bundles/newscoopnewscoop/js/DT_bootstrap.js') }}"></script>
 <script type="text/javascript">
-    var trans = {
+    var iPadAdName = '{{ iPadAdName }}';
+     var trans = {
         'frozen': '{{ 'plugin.printissuemanager.label.frozen'|trans }}',
         'published': '{{ 'plugin.printissuemanager.label.published'|trans }}',
         'submitted': '{{ 'plugin.printissuemanager.label.submitted'|trans }}',

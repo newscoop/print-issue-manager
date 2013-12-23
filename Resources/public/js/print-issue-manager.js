@@ -76,7 +76,7 @@
                         }
 
                         if(i == 5) {
-                            if ($('td:eq(3)', nRow).html() != 'iPad_Ad') {
+                            if ($('td:eq(3)', nRow).html() != iPadAdName) {
                                 $('td:eq('+i+')', nRow).addClass('js-printsection').data('editable', false);
                             } else {
                                 $('td:eq('+i+')', nRow).addClass('js-printsection').html('<i>disabled</i>');
@@ -84,7 +84,7 @@
                         }
 
                         if(i == 6) {
-                            if ($('td:eq(3)', nRow).html() != 'iPad_Ad') {
+                            if ($('td:eq(3)', nRow).html() != iPadAdName) {
                                 $('td:eq('+i+')', nRow).addClass('js-printstory').data('editable', false);
                             } else {
                                 $('td:eq('+i+')', nRow).addClass('js-printstory').html('<i>disabled</i>');
@@ -93,7 +93,7 @@
 
                         if(i == 7) {
                             $('td:eq('+i+')', nRow).html('<input type="checkbox" class="js-prominent" name="prominent" value="1" />');
-                            if ($('td:eq(3)', nRow).html() != 'iPad_Ad') { 
+                            if ($('td:eq(3)', nRow).html() != iPadAdName) { 
                                 if(aData[i] == true) {
                                     $('td:eq('+i+') input', nRow).attr('checked', true);
                                 }
