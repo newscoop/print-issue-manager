@@ -333,8 +333,10 @@ class PrintIssueManagerService
                 $contextList->setContextListId($contextBoxId);
                 $contextList->setArticleNumber($articleNumber);
                 $this->em->persist($contextList);
-                $this->em->flush();
             }
+
+            $this->em->flush();
+            
         } catch (\Exception $e) {
             return new \Exception('Error occured while creating new context list');
         }

@@ -1,0 +1,64 @@
+Plugins: "Plugins"
+plugin:
+  printissuemanager:
+    btn:
+      addarticles: "Neuen Artikel hinzufügen"
+      delete: "Löschen"
+      preview: "Vorschau"
+      save: "Speichern"
+      saveall: "Alle speichern"
+    label:
+      addnew: "Oder neu hinzufügen"
+      addnewone: "Neu hinzufügen"
+      articleremoved: "Artikel entfernt."
+      articlesloaded: Artikel geladen.
+      articletitle: "Artikeltitel"
+      articletype: "Artikeltyp"
+      backtolist: "Oder zurück zur Liste"
+      chooseprintsection: "Printrubrik auswählen"
+      chooseprintstory: "Printstory auswählen"
+      config: "Konfiguration"
+      createnew: "Neue Ausgabe anlegen?"
+      from: "von"
+      frozen: "Fertiggestellt"
+      gotoipad: "Zur Rubrik iPad"
+      inlineediterror: "Es wurden keine Inline-Änderungen vorgenommen. Speicherung abgelehnt."
+      isfrozen: "Diese Ausgabe ist fertiggestellt."
+      loadarticles: Artikel laden
+      noarticles: "Keine Artikel vorhanden."
+      noissues: "Es sind keine mobilen Ausgaben definiert."
+      notypes: "Es existieren keine 'iPad_Ad' und/oder 'mobile_issue' Artikeltypen. Bitte sehen Sie in der Plugin Dokumentation nach, wie man sie manuell erstellt."
+      options: "Optionen"
+      printsection: "Printrubrik"
+      printstory: "Printstory"
+      processing: "In Bearbeitung..."
+      prominent: "Prominent"
+      published: "Veröffentlicht"
+      saved: "Eingabe gespeichert."
+      search: Suche
+      section: "Online Rubrik"
+      submitted: "Eingepflegt"
+      tip: "Tip"
+      tipmsg: Die Sortierung wird alle bisher nicht gesicherten Änderungen löschen.
+      title: "Print Issues Manager"
+      webcode: Webcode
+    msg:
+      error: "Speichern nicht möglich."
+      ipaderror: "Die Rubrik iPad existiert nicht. Erstellen Sie zunächst eine Rubrik 'iPad' um eine mobile Ausgabe hinzufügen zu können."
+      loading: "Wird geladen... "
+      noprintdeskuser: "Es ist kein Printdesk User definiert. Erstellen Sie einen Printdesk User."
+      saved: "Erfolgreich gespeichert."
+    table:
+      filtering: "- filtert aus _MAX_ Einträgen"
+      info: "Zeigt_START_ bis _END_ von _TOTAL_ Eingaben an"
+      label:
+        filter: "Filter"
+        first: Erster
+        last: "Letzter"
+        next: "Nächster"
+        norecords: "Es wurde kein Eintrag gefunden."
+        previous: Vorheriger
+        processing: "In Berarbeitung..."
+        search: "Suche "
+      menu: Zeigt _MENU_ Einträge
+      noentries: "Es liegen keine Eingaben zum Anzeigen vor"
