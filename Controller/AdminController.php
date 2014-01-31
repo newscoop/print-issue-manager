@@ -24,7 +24,7 @@ class AdminController extends Controller
      * @Template()
      */
     public function indexAction(Request $request)
-    {   
+    {
         $service = $this->container->get('newscoop_print_issue_manager.service');
         $em = $this->container->get('em');
         $typeIPadExists = $service->checkArticleType(self::IPAD_AD);
@@ -331,16 +331,12 @@ class AdminController extends Controller
                 $sectionNumber = $article->getSection()->getNumber();
                 $languageId = $article->getLanguageId();
 
-                $relatedArticle->Preview = /*array(
-                    'module' => 'api',
-                    'controller' => 'articles',
-                    'action' => 'item',
-                ) .'?'. http_build_query(array(
+                $relatedArticle->Preview = $this->generateUrl('newscoop_tageswochemobileplugin_articles_item', array(
                     'article_id' => $article->getNumber(),
                     'side' => 'front',
                     'language_id' => $article->getLanguageId(),
                     'allow_unpublished' => true
-                ));*/ 'no mobile api yet';
+                ));
 
                 $items[] = $relatedArticle;
             }
