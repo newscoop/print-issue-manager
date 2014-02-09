@@ -1,6 +1,6 @@
 {
     "name": "newscoop/print-issue-manager-bundle",
-    "description": "Newscoop Newsletter Plugin bundle",
+    "description": "Newscoop Print Issues Manager Plugin bundle",
     "keywords": ["newscoop", "print", "issue", "manager", "plugin", "bundle"],
     "version": "0.2",
     "type": "newscoop-plugin",
