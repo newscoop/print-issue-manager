@@ -53,11 +53,11 @@
             if (typeof relatedArticlesList != 'undefined') {
                 relatedArticlesList.fnClearTable();
                 relatedArticlesList.fnAddData(data.aaData);
-                
+
                 return true;
             }
 
-            relatedArticlesList = table.dataTable({ 
+            relatedArticlesList = table.dataTable({
                 'aaData': printIssueManager.tableData,
                 'sPaginationType': 'full_numbers',
                 'bRetrieve': true,
@@ -76,7 +76,7 @@
                         }
 
                         if(i == 5) {
-                            if ($('td:eq(3)', nRow).html() != iPadAdName) {
+                            if ($('td:eq(3)', nRow).html() != iPadAdName && ($('td:eq(3)', nRow).html() == 'news' || $('td:eq(3)', nRow).html() == 'blog')) {
                                 $('td:eq('+i+')', nRow).addClass('js-printsection').data('editable', false);
                             } else {
                                 $('td:eq('+i+')', nRow).addClass('js-printsection').html('<i>disabled</i>');
@@ -84,7 +84,7 @@
                         }
 
                         if(i == 6) {
-                            if ($('td:eq(3)', nRow).html() != iPadAdName) {
+                            if ($('td:eq(3)', nRow).html() != iPadAdName && ($('td:eq(3)', nRow).html() == 'news' || $('td:eq(3)', nRow).html() == 'blog')) {
                                 $('td:eq('+i+')', nRow).addClass('js-printstory').data('editable', false);
                             } else {
                                 $('td:eq('+i+')', nRow).addClass('js-printstory').html('<i>disabled</i>');
@@ -93,7 +93,8 @@
 
                         if(i == 7) {
                             $('td:eq('+i+')', nRow).html('<input type="checkbox" class="js-prominent" name="prominent" value="1" />');
-                            if ($('td:eq(3)', nRow).html() != iPadAdName) { 
+                            console.log($('td:eq(3)', nRow).html());
+                            if ($('td:eq(3)', nRow).html() != iPadAdName && ($('td:eq(3)', nRow).html() == 'news' || $('td:eq(3)', nRow).html() == 'blog')) {
                                 if(aData[i] == true) {
                                     $('td:eq('+i+') input', nRow).attr('checked', true);
                                 }
@@ -123,7 +124,7 @@
                     $('.dataTables_length').hide();
                     $('.dataTables_paginate').parent().hide();
                 },
-                'aoColumnDefs': [ 
+                'aoColumnDefs': [
                     { "sClass": "center", "aTargets": [ 0, -1, -2, -3] },
                     { 'bSortable': false, 'aTargets': [ 0, 8, 9 ] }
                 ]
@@ -131,7 +132,6 @@
         },
         reorderArticles: function(table) {
             var issue = $('select.mobile_issues option:selected');
-  
             flashMessage(trans['processing']);
             $.ajax({
                 type: "POST",
@@ -149,7 +149,7 @@
                 printIssueManager.currentIssue = res.issue;
                 printIssueManager.utils.upadateTable($("table.issueArticles"), res);
                 } catch (e) {}
-                
+
                 flashMessage(trans['saved']);
             });
         },
@@ -172,8 +172,6 @@
                 } catch (e) {
                     flashMessage(trans['noarticles']);
                 }
-                
-                
             });
         },
         inlineEdit: function(element, addNewOne){
@@ -253,7 +251,7 @@
                 } else {
                     $('.js-printstory', updateForm).val($('.js-printstory input', element).val());
                 }
-            } 
+            }
 
             if ($('.js-printsection', element).data('editable') != true) {
                 $('.js-printsection', updateForm).val($('.js-printsection', element).html());
@@ -262,7 +260,7 @@
             if ($('.js-printstory', element).data('editable') != true) {
                 $('.js-printstory', updateForm).val($('.js-printstory', element).html());
             }
-            
+
             $('.js-prominent', updateForm).val($('input.js-prominent:checked', element).val());
 
             if ($('input.js-prominent:checked', element).length == 0) {
@@ -294,7 +292,6 @@
             } catch (e) {
                   return false;
             }
-            
         },
         collectDataFromTable : function(table) {
             return relatedArticlesList.fnGetData();
@@ -350,7 +347,7 @@
     $('select.mobile_issues').change(function(){
         var issue = $('select.mobile_issues option:selected');
         printIssueManager.utils.getNewIssueData(
-            issue.data('number'), 
+            issue.data('number'),
             issue.data('language')
         );
         $(".content-box button.iframe").attr('href', issue.data('contentBoxHref'));
@@ -433,7 +430,6 @@
         e.preventDefault();
         printIssueManager.utils.removeArticle($(this));
     });
-    
 
     // fancybox for popups
     $('button.iframe').each(function() {
@@ -464,7 +460,7 @@
         'onClosed'      : function() {
             var issue = $('select.mobile_issues option:selected');
             printIssueManager.utils.getNewIssueData(
-                issue.data('number'), 
+                issue.data('number'),
                 issue.data('language')
             );
         }

@@ -23,7 +23,6 @@ class PrintIssueManagerService
     private $em;
 
     /**
-     * @param array $config
      * @param Doctrine\ORM\EntityManager $em
      */
     public function __construct(EntityManager $em)
@@ -31,12 +30,19 @@ class PrintIssueManagerService
         $this->em = $em;
     }
 
+    /**
+     * Get related articles
+     *
+     * @param Article $article
+     *
+     * @return Newscoop\Entity\Article
+     */
     public function getRelatedArticles(Article $article)
     {
         $related = array();
         $contextBox = $this->getContextBoxByIdOrIssueId(null, $article->getId());
         $articleIds = $this->getContextBoxArticleList($contextBox->getId());
-        foreach($articleIds as $articleId) {
+        foreach ($articleIds as $articleId) {
             $related[] = $this->find($article->getLanguage(), $articleId);
         }
 
@@ -46,26 +52,28 @@ class PrintIssueManagerService
     /**
      * Find an article
      *
-     * @param Newscoop\Entity\Language
-     * @param int $number
+     * @param Newscoop\Entity\Language $language
+     * @param int                      $number
+     *
      * @return Newscoop\Entity\Article
      */
     public function find(Language $language, $number)
     {
         return $this->getArticleRepository()
             ->find(array(
-                'language' => $language->getId(), 
+                'language' => $language->getId(),
                 'number' => $number
             ));
     }
-    
+
     /**
      * Find by given criteria
      *
-     * @param array $criteria
+     * @param array      $criteria
      * @param array|null $orderBy
-     * @param int|null $limit
-     * @param int|null $offset
+     * @param int|null   $limit
+     * @param int|null   $offset
+     *
      * @return mixed
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -77,7 +85,8 @@ class PrintIssueManagerService
      * Find by given topic
      *
      * @param Newscoop\Entity\Topic $topic
-     * @param int $limit
+     * @param int                   $limit
+     *
      * @return array
      */
     public function findByTopic(Topic $topic, $limit)
@@ -95,7 +104,7 @@ class PrintIssueManagerService
     /**
      * Find article by given number
      *
-     * @param  int $number Article number
+     * @param int $number Article number
      *
      * @return Newscoop\Entity\Article
      */
@@ -114,7 +123,7 @@ class PrintIssueManagerService
      * @return bool
      */
     public function checkArticleType($type)
-    {   
+    {
         $articleType = $this->em->getRepository('Newscoop\Entity\ArticleType')
             ->createQueryBuilder('a')
             ->andWhere('a.name = :type')
@@ -139,7 +148,7 @@ class PrintIssueManagerService
      * @return Newscoop\Entity\Article
      */
     public function getMobileIssues($type)
-    {   
+    {
         $article = $this->getArticleRepository()
             ->createQueryBuilder('a')
             ->andWhere('a.type = :mobile_issue')
@@ -180,7 +189,7 @@ class PrintIssueManagerService
     /**
      * Get latest issues
      *
-     * @param  int $number Limit
+     * @param int $number Limit
      *
      * @return Newscoop\Entity\Issue
      */
@@ -201,7 +210,7 @@ class PrintIssueManagerService
      *
      * @return string
      */
-    public function findIpadSection() 
+    public function findIpadSection()
     {
         $section = $this->getSectionRepository()
             ->createQueryBuilder('s')
@@ -224,7 +233,7 @@ class PrintIssueManagerService
      * @return int
      */
     public function getContextBoxByIdOrIssueId($boxId = null, $articleNumber = null) 
-    {   
+    {
         if (is_numeric($boxId) && $boxId > 0) {
             $contextBox = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextBox')
                 ->createQueryBuilder('c')
@@ -233,7 +242,7 @@ class PrintIssueManagerService
                 ->getQuery()
                 ->getSingleResult();
         } else {
-            if(is_numeric($articleNumber) && $articleNumber > 0) {
+            if (is_numeric($articleNumber) && $articleNumber > 0) {
                 $contextBox = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextBox')
                     ->createQueryBuilder('c')
                     ->where('c.articleNumber = :id')
@@ -242,7 +251,7 @@ class PrintIssueManagerService
                     ->getSingleResult();
             }
         }
-        
+
         return $contextBox;
     }
 
@@ -254,7 +263,7 @@ class PrintIssueManagerService
      * @return array|exception
      */
     public function getContextBoxArticleList($id)
-    {   
+    {
         try{
             $rows = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextArticle')
                 ->createQueryBuilder('ca')
@@ -267,7 +276,7 @@ class PrintIssueManagerService
 
             $returnArray = array();
             if (is_array($rows)) {
-                foreach($rows as $row) {
+                foreach ($rows as $row) {
                     $returnArray[] = $row['articleNumber'];
                 }
             }
@@ -282,11 +291,12 @@ class PrintIssueManagerService
      * Saves context list
      *
      * @param string $contextListId
-     * @param array $articleNumbers
+     * @param array  $articlesNumbers
      *
      * @return void
      */
-    public function saveList($contextListId, $articlesNumbers) {
+    public function saveList($contextListId, $articlesNumbers)
+    {
         $this->removeList($contextListId);
         $this->insertList($contextListId, array_unique($articlesNumbers));
     }
@@ -298,7 +308,7 @@ class PrintIssueManagerService
      *
      * @return void|exception
      */
-    public function removeList($contextListId) 
+    public function removeList($contextListId)
     {
         try {
             $contextBoxes = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\ContextArticle')
@@ -309,9 +319,9 @@ class PrintIssueManagerService
             foreach ($contextBoxes as $contextBox) {
                 $this->em->remove($contextBox);
             }
-            
+
             $this->em->flush();
-            
+
         } catch (\Exception $e) {
             return new \Exception('Error occured while removing context list');
         }
@@ -321,14 +331,14 @@ class PrintIssueManagerService
      * Inserts new context list
      *
      * @param string $contextBoxId
-     * @param string $articleNumber
+     * @param string $articlesNumbers
      *
      * @return void|exception
      */
-    public function insertList($contextBoxId, $articlesNumbers) 
+    public function insertList($contextBoxId, $articlesNumbers)
     {
         try {
-            foreach($articlesNumbers as $articleNumber) {
+            foreach ($articlesNumbers as $articleNumber) {
                 $contextList = new ContextArticle();
                 $contextList->setContextListId($contextBoxId);
                 $contextList->setArticleNumber($articleNumber);
@@ -336,7 +346,7 @@ class PrintIssueManagerService
             }
 
             $this->em->flush();
-            
+
         } catch (\Exception $e) {
             return new \Exception('Error occured while creating new context list');
         }
@@ -350,7 +360,7 @@ class PrintIssueManagerService
      * @return Newscoop\Entity\Article|exception
      */
     public function getArticles($userId)
-    {   
+    {
         try {
             $articles = $this->getArticleRepository()
                 ->createQueryBuilder('a')
@@ -380,7 +390,7 @@ class PrintIssueManagerService
      * @return array|exception
      */
     public function processCustomField(array $params)
-    {   
+    {
         try {
             $articleTypes = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\IPadAdArticleType')
                 ->createQueryBuilder('i')
@@ -402,7 +412,7 @@ class PrintIssueManagerService
 
         } catch (\Exception $e) {
             return new \Exception('Error occured while fetching articles based on article type data');
-        } 
+        }
     }
 
     /**
@@ -413,7 +423,7 @@ class PrintIssueManagerService
      * @return array|exception
      */
     public function processPrintSwitchField($switch)
-    {   
+    {
         try {
             $articleTypes = $this->em->getRepository('Newscoop\PrintIssueManagerBundle\Entity\NewsArticleType')
                 ->createQueryBuilder('i')

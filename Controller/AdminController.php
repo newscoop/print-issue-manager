@@ -13,7 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+/**
+ *  Admin controller
+ */
 class AdminController extends Controller
 {
     const MOBILE_ISSUE = "mobile_issue";
@@ -91,7 +93,7 @@ class AdminController extends Controller
         foreach ($printArticles as $key => $field) {
             $printArticlesArray[$key] = $field;
         }
-        
+
         // plus all articles of type iPad_Ad with switch active on.
         $ipadArticles = $service->processCustomField(array(
             'type' => 'iPad_Ad',
@@ -100,13 +102,14 @@ class AdminController extends Controller
         ));
 
         $mergedArticles = array_merge($printDescArticles, $printArticlesArray, $ipadArticles);
-        foreach($mergedArticles as $article) {
+        foreach ($mergedArticles as $article) {
             if (in_array($article->getSection()->getIssue()->getNumber(), $allowedIssues) || ($article->getType() == 'iPad_Ad')) {
                 $existingArticles[] = $article->getNumber();
             }
         }
 
         $service->saveList($request->get('context_box_id'), array_unique($existingArticles));
+
         return $this->getIssueArticlesAction($request, $request->get('article_number'), $request->get('article_language'));
     }
 
@@ -115,14 +118,14 @@ class AdminController extends Controller
      */
     public function getIssueArticlesAction(Request $request, $articleNumber = null, $articleLanguage = null)
     {
-       if (!$articleNumber) {
+        if (!$articleNumber) {
             $articleNumber = $request->get('article_number');
         }
 
         if (!$articleLanguage) {
             $articleLanguage = $request->get('article_language');
         }
-        
+
         $service =  $this->container->get('newscoop_print_issue_manager.service');
         $em =  $this->container->get('em');
         //article number in this case is issue id
@@ -163,10 +166,10 @@ class AdminController extends Controller
                 null, //remove
                 $item->Title,
                 $item->Webcode,
-                $item->ArticleType, 
-                $item->OnlineSections, 
+                $item->ArticleType,
+                $item->OnlineSections,
                 $item->PrintSection,
-                $item->PrintStory, 
+                $item->PrintStory,
                 $item->Prominent, //prominent
                 $item->Preview,
                 null,  //save
@@ -207,7 +210,7 @@ class AdminController extends Controller
         $service =  $this->container->get('newscoop_print_issue_manager.service');
         $em =  $this->container->get('em');;
         if ($request->get('data')) {
-            foreach($request->get('data') as $article) {
+            foreach ($request->get('data') as $article) {
                 foreach ($article as $key => $value) {
                     $article[$article[$key]['name']] = $article[$key]['value'];
                     unset($article[$key]);
@@ -270,7 +273,7 @@ class AdminController extends Controller
      * @Route("/admin/print-issue-manager/update-order", options={"expose"=true})
      */
     public function updateOrderAction(Request $request)
-    {   
+    {
         $service =  $this->container->get('newscoop_print_issue_manager.service');
         $contextBoxId = $request->get('content_box_id');
         $contextBoxArticles = $request->get('context_box_articles');
@@ -296,7 +299,7 @@ class AdminController extends Controller
                         . '&amp;f_article_number=' . $article->getNumber() . '&amp;f_language_id=' . $article->getLanguageId()
                         . '&amp;f_language_selected=' . $article->getLanguageId().'">'.$article->getTitle().'</a>';
                 $relatedArticle->ArticleType = $article->getType();
-                
+
                 try {
                     $relatedArticle->OnlineSections = $article->getSection()->getName();
                     $publicationId = $article->getPublicationId();
