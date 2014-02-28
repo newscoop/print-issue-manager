@@ -110,7 +110,7 @@ class AdminController extends Controller
      */
     public function getIssueArticlesAction(Request $request, $articleNumber = null, $articleLanguage = null)
     {
-        try {if (!$articleNumber) {
+        if (!$articleNumber) {
             $articleNumber = $request->get('article_number');
         }
 
@@ -158,9 +158,7 @@ class AdminController extends Controller
             'contextBox' => $contextBox->getId(),
             'aaData' => array()
         );
-} catch (\Exception $e) {
-    ladybug_dump($e);die;
-}
+
         foreach($items as $key => $item) {
             $temp['aaData'][] = array(
                 null, //remove
