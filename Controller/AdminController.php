@@ -39,21 +39,13 @@ class AdminController extends Controller
         $session = $request->getSession();
         $session->set('pim_allow_unpublished', true);
 
-        $iPadLinkParams = array();
-        foreach ($iPadSection as $value) {
-            $iPadLinkParams['publicationId'] = $value->getIssue()->getPublicationId();
-            $iPadLinkParams['issueId'] = $value->getIssue()->getNumber();
-            $iPadLinkParams['number'] = $value->getNumber();
-            $iPadLinkParams['languageId'] = $value->getLanguageId();
-        }
-
         return array(
             'iPadAdName' => self::IPAD_AD,
             'typeIPadExists' => $typeIPadExists,
             'typeMobileExists' => $typeMobileExists,
             'issues' => $mobileIssuesArticles,
             'latestPrintIssues' => $latestPrintIssues,
-            'iPadLinkParams' => $iPadLinkParams,
+            'iPadLinkParams' => $iPadSection[0],
 
         );
     }
@@ -103,7 +95,7 @@ class AdminController extends Controller
 
         $mergedArticles = array_merge($printDescArticles, $printArticlesArray, $ipadArticles);
         foreach ($mergedArticles as $article) {
-            if (in_array($article->getSection()->getIssue()->getNumber(), $allowedIssues) || ($article->getType() == 'iPad_Ad')) {
+            if (in_array($article->getIssueId(), $allowedIssues) || ($article->getType() == 'iPad_Ad')) {
                 $existingArticles[] = $article->getNumber();
             }
         }
@@ -118,7 +110,7 @@ class AdminController extends Controller
      */
     public function getIssueArticlesAction(Request $request, $articleNumber = null, $articleLanguage = null)
     {
-        if (!$articleNumber) {
+        try {if (!$articleNumber) {
             $articleNumber = $request->get('article_number');
         }
 
@@ -130,11 +122,17 @@ class AdminController extends Controller
         $em =  $this->container->get('em');
         //article number in this case is issue id
         $issue = $em->getRepository('Newscoop\Entity\Article')
-            ->findOneBy(array(
+            ->createQueryBuilder('a')
+            ->where('a.type = :type')
+            ->andWhere('a.number = :number')
+            ->andWhere('a.language = :language')
+            ->setParameters(array(
                 'type' => self::MOBILE_ISSUE,
                 'number'=> $articleNumber,
                 'language' => $articleLanguage
-            ));
+            ))
+            ->getQuery()
+            ->getSingleResult();
 
         if (!$issue) {
             return $this->redirect($this->generateUrl('newscoop_printissuemanager_admin_index'));
@@ -153,14 +151,16 @@ class AdminController extends Controller
                 'status' => $issue->getWorkflowStatus(),
                 'freeze' => $issue->getData('freeze'),
                 'url' => '/admin/articles/edit.php' . '?f_publication_id=' . $issue->getPublicationId()
-                        . '&amp;f_issue_number=' . $issue->getIssue()->getNumber() . '&amp;f_section_number=' . $issue->getSection()->getNumber()
+                        . '&amp;f_issue_number=' . $issue->getIssue()->getNumber() . '&amp;f_section_number=' . $issue->getSectionId()
                         . '&amp;f_article_number=' . $issue->getNumber() . '&amp;f_language_id=' . $issue->getLanguageId()
                         . '&amp;f_language_selected=' . $issue->getLanguageId()
                 ),
             'contextBox' => $contextBox->getId(),
             'aaData' => array()
         );
-
+} catch (\Exception $e) {
+    ladybug_dump($e);die;
+}
         foreach($items as $key => $item) {
             $temp['aaData'][] = array(
                 null, //remove
@@ -293,51 +293,51 @@ class AdminController extends Controller
             foreach ($relatedArticles as $article) {
                 $relatedArticleInfo = array();
                 $relatedArticle = new \stdClass();
-                $relatedArticle->id = $article->getNumber();
-                $relatedArticle->Title = '<a href="/admin/articles/edit.php' . '?f_publication_id=' . $article->getPublicationId()
-                        . '&amp;f_issue_number=' . $article->getSection()->getIssue()->getNumber() . '&amp;f_section_number=' . $article->getSection()->getNumber()
-                        . '&amp;f_article_number=' . $article->getNumber() . '&amp;f_language_id=' . $article->getLanguageId()
-                        . '&amp;f_language_selected=' . $article->getLanguageId().'">'.$article->getTitle().'</a>';
-                $relatedArticle->ArticleType = $article->getType();
+                $relatedArticle->id = $article[0]->getNumber();
+                $relatedArticle->Title = '<a href="/admin/articles/edit.php' . '?f_publication_id=' . $article[0]->getPublicationId()
+                        . '&amp;f_issue_number=' . $article[0]->getIssueId() . '&amp;f_section_number=' . $article[0]->getSectionId()
+                        . '&amp;f_article_number=' . $article[0]->getNumber() . '&amp;f_language_id=' . $article[0]->getLanguageId()
+                        . '&amp;f_language_selected=' . $article[0]->getLanguageId().'">'.$article[0]->getTitle().'</a>';
+                $relatedArticle->ArticleType = $article[0]->getType();
 
                 try {
-                    $relatedArticle->OnlineSections = $article->getSection()->getName();
-                    $publicationId = $article->getPublicationId();
+                    $relatedArticle->OnlineSections = $article[0]->getSection()->getName();
+                    $publicationId = $article[0]->getPublicationId();
                 } catch(\Doctrine\ORM\EntityNotFoundException $e) {
                     $relatedArticle->OnlineSections = null;
                     $publicationId = null;
                 }
 
                 try {
-                    $relatedArticle->PrintSection = $article->getData('printsection');
+                    $relatedArticle->PrintSection = $article[0]->getData('printsection');
                 } catch(\InvalidPropertyException $e) {
                     $relatedArticle->PrintSection = null;
                 }
 
                 try {
-                    $relatedArticle->PrintStory = $article->getData('printstory');
+                    $relatedArticle->PrintStory = $article[0]->getData('printstory');
                 } catch(\InvalidPropertyException $e) {
                     $relatedArticle->PrintStory = null;
                 }
 
                 try {
-                    $relatedArticle->Prominent = $article->getData('iPad_prominent');
+                    $relatedArticle->Prominent = $article[0]->getData('iPad_prominent');
                 } catch(\InvalidPropertyException $e) {
                     $relatedArticle->Prominent = null;
                 }
 
-                $relatedArticle->LanguageId = $article->getLanguageId();
+                $relatedArticle->LanguageId = $article[0]->getLanguageId();
                 $webcodeService =  $this->container->get('webcode');
-                $relatedArticle->Webcode = $webcodeService->getArticleWebcode($article);
+                $relatedArticle->Webcode = $webcodeService->getArticleWebcode($article[0]);
 
-                $issueNumber = $article->getIssue()->getNumber();
-                $sectionNumber = $article->getSection()->getNumber();
-                $languageId = $article->getLanguageId();
+                $issueNumber = $article[0]->getIssueId();
+                $sectionNumber = $article[0]->getSectionId();
+                $languageId = $article[0]->getLanguageId();
 
                 $relatedArticle->Preview = $this->generateUrl('newscoop_tageswochemobileplugin_articles_item', array(
-                    'article_id' => $article->getNumber(),
+                    'article_id' => $article[0]->getNumber(),
                     'side' => 'front',
-                    'language_id' => $article->getLanguageId(),
+                    'language_id' => $article[0]->getLanguageId(),
                     'allow_unpublished' => true
                 ));
 

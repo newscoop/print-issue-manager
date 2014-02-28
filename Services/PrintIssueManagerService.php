@@ -59,11 +59,19 @@ class PrintIssueManagerService
      */
     public function find(Language $language, $number)
     {
-        return $this->getArticleRepository()
-            ->find(array(
-                'language' => $language->getId(),
-                'number' => $number
-            ));
+        $article = $this->em->getRepository('Newscoop\Entity\Article')
+            ->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.number = :number')
+            ->andWhere('a.language = :language')
+            ->setParameters(array(
+                'number'=> $number,
+                'language' => $language->getId()
+            ))
+            ->getQuery()
+            ->getResult();
+
+        return $article;
     }
 
     /**
@@ -214,12 +222,17 @@ class PrintIssueManagerService
     {
         $section = $this->getSectionRepository()
             ->createQueryBuilder('s')
+            ->select('s.number', 'p.id as publicationId',
+                'i.number as issueId', 'l.id as languageId')
+            ->leftJoin('s.publication', 'p')
+            ->leftJoin('s.issue', 'i')
+            ->leftJoin('s.language', 'l')
             ->where('s.name = :name')
             ->setParameter('name', 'iPad')
             ->orderBy('s.id', 'desc')
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         return $section;
     }
