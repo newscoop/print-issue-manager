@@ -72,7 +72,7 @@
                 fnRowCallback: function( nRow, aData, iDisplayIndex ) {
                     for(i=0; i < aData.length; i++) {
                         if(i == 0) {
-                            $('td:eq('+i+')', nRow).html('<button type="button" class="btn btn-danger btn-xs"><a href="'+Routing.generate('newscoop_printissuemanager_admin_removearticle', { id: aData[10] })+'" data-article-id="'+aData[10]+'" data-language-id="'+aData[11]+'" class="remove">'+trans['delete']+'</a></button>');
+                            $('td:eq('+i+')', nRow).html('<a class="btn btn-danger btn-xs remove" href="'+Routing.generate('newscoop_printissuemanager_admin_removearticle', { id: aData[10] })+'" data-article-id="'+aData[10]+'" data-language-id="'+aData[11]+'">'+trans['delete']+'</a>');
                         }
 
                         if(i == 5) {
@@ -104,11 +104,11 @@
                         }
 
                         if(i == 8) {
-                            $('td:eq('+i+')', nRow).html('<button type="button" class="btn btn-primary btn-xs"><a href="'+aData[i]+'" class="preview">'+trans['preview']+'</a></button>');
+                            $('td:eq('+i+')', nRow).html('<a class="btn btn-primary btn-xs preview" target="_blank" href="'+aData[i]+'" >'+trans['preview']+'</a>');
                         }
 
                         if(i == 9) {
-                            $('td:eq('+i+')', nRow).html('<button type="button" class="btn btn-success btn-xs"><a href="'+Routing.generate('newscoop_printissuemanager_admin_savearticles')+'" data-content-box-id="'+aData[10]+'" data-language-id="'+aData[11]+'" class="save-one">'+trans['save']+'</a></button>');
+                            $('td:eq('+i+')', nRow).html('<a class="btn btn-primary btn-xs save-one" href="'+Routing.generate('newscoop_printissuemanager_admin_savearticles')+'" data-content-box-id="'+aData[10]+'" data-language-id="'+aData[11]+'">'+trans['save']+'</a>');
                         }
                     }
 

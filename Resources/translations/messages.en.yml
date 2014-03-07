@@ -2,7 +2,7 @@ Plugins: "Plugins"
 plugin:
   printissuemanager:
     label:
-      title: "Print Issues Manager"
+      title: "Print Issue Manager"
       config: "configuration"
       options: "Options"
       createnew: "Create new issue?"
