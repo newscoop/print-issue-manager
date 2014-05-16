@@ -1,0 +1,64 @@
+Plugins: Plugins
+plugin:
+    printissuemanager:
+        label:
+            title: 'Print Issue Manager'
+            config: configuration
+            options: Options
+            createnew: 'Create new issue?'
+            loadarticles: 'Load articles'
+            from: from
+            noissues: 'No mobile issues defined.'
+            published: Published
+            submitted: Submitted
+            frozen: Frozen
+            search: Search
+            saved: 'Order saved.'
+            articlesloaded: 'Articles loaded.'
+            chooseprintsection: 'Choose print section'
+            chooseprintstory: 'Choose print story'
+            addnew: 'Or add new'
+            backtolist: 'Or back to the list'
+            addnewone: 'Add new one'
+            articleremoved: 'Article removed.'
+            isfrozen: 'This issue is frozen.'
+            articletitle: 'Article title'
+            webcode: Webcode
+            articletype: 'Article type'
+            section: 'Online section'
+            printsection: 'Print section'
+            printstory: 'Print story'
+            prominent: Prominent
+            processing: Processing...
+            gotoipad: 'Go to iPad section'
+            inlineediterror: 'No inline changes have been made. Saving dismissed.'
+            tip: Tip
+            tipmsg: 'Reordering will clear all unsaved inline changes.'
+            noarticles: 'No articles to be loaded.'
+            notypes: '''iPad_Ad'' and/or ''mobile_issue'' article types do not exist. Create them manually. Please see plugin documentation.'
+        btn:
+            addarticles: 'Add new articles'
+            delete: Delete
+            save: Save
+            preview: Preview
+            saveall: 'Save all'
+        msg:
+            saved: 'Successfully saved.'
+            error: 'Could not save.'
+            ipaderror: 'iPad section does not exist. Create ''iPad'' section first to be able to add mobile issues.'
+            loading: Loading...
+            noprintdeskuser: 'No printdesk user defined. Create ''printdesk'' user.'
+        table:
+            info: 'Showing _START_ to _END_ of _TOTAL_ entries'
+            noentries: 'No entries to show'
+            filtering: '- filtering from _MAX_ records'
+            menu: 'Display _MENU_ records'
+            label:
+                search: Search
+                filter: Filter
+                processing: Processing...
+                last: Last
+                next: Next
+                first: First
+                previous: Previous
+                norecords: 'No records found.'

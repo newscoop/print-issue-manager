@@ -1,0 +1,64 @@
+Plugins: Wtyczki
+plugin:
+    printissuemanager:
+        label:
+            title: null
+            config: null
+            options: null
+            createnew: null
+            loadarticles: null
+            from: null
+            noissues: null
+            published: Opublikowane
+            submitted: Wysłane
+            frozen: null
+            search: Szukaj
+            saved: null
+            articlesloaded: null
+            chooseprintsection: null
+            chooseprintstory: null
+            addnew: null
+            backtolist: null
+            addnewone: null
+            articleremoved: null
+            isfrozen: null
+            articletitle: 'Tytuł artykułu'
+            webcode: 'Kod internetowy'
+            articletype: null
+            section: null
+            printsection: null
+            printstory: null
+            prominent: null
+            processing: Przetważanie...
+            gotoipad: null
+            inlineediterror: null
+            tip: null
+            tipmsg: null
+            noarticles: null
+            notypes: null
+        btn:
+            addarticles: null
+            delete: Usuń
+            save: Zapisz
+            preview: Podgląd
+            saveall: null
+        msg:
+            saved: null
+            error: null
+            ipaderror: null
+            loading: Ladowanie...
+            noprintdeskuser: null
+        table:
+            info: 'Widoczne _START_ do _END_ z _TOTAL_ rekordów'
+            noentries: 'Nie ma żadnych rekordów'
+            filtering: ' - filtrowanie z _MAX_ rekordów'
+            menu: 'Pokazuje _MENU_ rekordów'
+            label:
+                search: Szukaj
+                filter: Filtrowanie
+                processing: Przetważanie...
+                last: Ostatni
+                next: Następny
+                first: Pierwszy
+                previous: Poprzedni
+                norecords: 'Nie znaleziono żadnych rekordów.'
