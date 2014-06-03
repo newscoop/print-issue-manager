@@ -1,64 +1,64 @@
-Plugins: null
+Plugins: Plug-iny
 plugin:
     printissuemanager:
         label:
-            title: null
-            config: null
-            options: null
-            createnew: null
-            loadarticles: null
-            from: null
-            noissues: null
-            published: null
-            submitted: null
+            title: 'Spravování tištěných vydání'
+            config: Konfigurace
+            options: Možnosti
+            createnew: 'Vytvořit nové vydání?'
+            loadarticles: 'Nahrát články'
+            from: z
+            noissues: 'Nejsou definována mobilní vydání.'
+            published: Zveřejněno
+            submitted: Podáno
             frozen: null
-            search: null
-            saved: null
-            articlesloaded: null
-            chooseprintsection: null
-            chooseprintstory: null
-            addnew: null
-            backtolist: null
-            addnewone: null
-            articleremoved: null
+            search: Hledat
+            saved: 'Objednávka uložena.'
+            articlesloaded: 'Články nahrány.'
+            chooseprintsection: 'Vyber oblast tisku.'
+            chooseprintstory: 'Vybrat článek k tisku'
+            addnew: 'Nebo přidat nový'
+            backtolist: 'Nebo zpátky na seznam'
+            addnewone: 'Přidat nový'
+            articleremoved: 'Článek odstraněn.'
             isfrozen: null
-            articletitle: null
+            articletitle: 'Titulek článku'
             webcode: null
-            articletype: null
-            section: null
-            printsection: null
-            printstory: null
-            prominent: null
-            processing: null
-            gotoipad: null
-            inlineediterror: null
-            tip: null
-            tipmsg: null
-            noarticles: null
-            notypes: null
+            articletype: 'Typ článku'
+            section: 'Online sekce'
+            printsection: 'Tisková sekce'
+            printstory: 'Vytisknout článek'
+            prominent: Prominentní
+            processing: Zpracováváno...
+            gotoipad: 'Jdi do iPad sekce'
+            inlineediterror: 'Žádné změny uvnitř nebyly udělány. Ukládání bylo zamítnuto.'
+            tip: Rada
+            tipmsg: 'Změna pořadí vymaže všechny neuložené změny uvnitř textu.'
+            noarticles: 'Žádné články k nahrání.'
+            notypes: '''iPad_Ad'' a/nebo ''mobile_issue'' typy článku neexistují. Vytvořte je manuálně. Prohlídněte si dokumentaci k pluginu.'
         btn:
-            addarticles: null
-            delete: null
-            save: null
-            preview: null
-            saveall: null
+            addarticles: 'Přidat nové články'
+            delete: Smazat
+            save: Uložit
+            preview: Náhled
+            saveall: 'Uložit vše'
         msg:
-            saved: null
-            error: null
-            ipaderror: null
-            loading: null
-            noprintdeskuser: null
+            saved: 'Úspěšně uloženo.'
+            error: 'Nebylo možno uložit.'
+            ipaderror: 'iPad sekce neexistuje. Vytvořte nejprve ''iPad'' sekci, aby bylo možné přidat články pro mobily.'
+            loading: 'Nahrává se...'
+            noprintdeskuser: 'Printdesk uživatel nedefinován. Vytvořit uživatele ''printdesk''.'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Ukázat _START_ až do_END_ z _TOTAL_ záznamů'
+            noentries: 'Nejsou zde žádné příspěvky k zobrazení'
+            filtering: '- filtrováno z _MAX_ záznamů'
+            menu: 'Zobrazit _MENU_ záznamy'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Hledej
+                filter: Filtrovat
+                processing: Zpracovávám...
+                last: Poslední
+                next: Další
+                first: První
+                previous: Předchozí
+                norecords: 'Nebyly nalezeny žádné záznamy.'
