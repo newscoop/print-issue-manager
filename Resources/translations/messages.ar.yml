@@ -31,11 +31,11 @@ plugin:
             prominent: null
             processing: null
             gotoipad: null
-            inlineediterror: null
+            inlineediterror: 'لم تجر أية تغييرات ضمنية.تم رفض الحفظ.'
             tip: null
-            tipmsg: null
+            tipmsg: 'إعادة الترتيب سيقوم بمحو جميع التغييرات الغير محفوظة.'
             noarticles: null
-            notypes: null
+            notypes: '''iPad_Ad'' و / أو ''mobile_issue "أنواع هذه المادة لا وجود لها.  قم بإنشائها يدوياً. الرجاء مراجعة وثائق البرنامج المساعد.'
         btn:
             addarticles: null
             delete: null
@@ -47,7 +47,7 @@ plugin:
             error: null
             ipaderror: null
             loading: null
-            noprintdeskuser: null
+            noprintdeskuser: 'لم يتم العثور على مستخدم ''printdesk''. قم بإنشاء مستخدم ''printdesk'''
         table:
             info: null
             noentries: null
