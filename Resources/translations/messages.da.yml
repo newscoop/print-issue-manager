@@ -1,64 +1,64 @@
-Plugins: null
+Plugins: Plugins
 plugin:
     printissuemanager:
         label:
-            title: null
-            config: null
-            options: null
-            createnew: null
-            loadarticles: null
-            from: null
-            noissues: null
-            published: null
-            submitted: null
-            frozen: null
-            search: null
-            saved: null
-            articlesloaded: null
-            chooseprintsection: null
-            chooseprintstory: null
-            addnew: null
-            backtolist: null
-            addnewone: null
-            articleremoved: null
-            isfrozen: null
-            articletitle: null
-            webcode: null
-            articletype: null
-            section: null
-            printsection: null
-            printstory: null
-            prominent: null
-            processing: null
-            gotoipad: null
-            inlineediterror: null
-            tip: null
-            tipmsg: null
-            noarticles: null
-            notypes: null
+            title: 'Administration af trykte udgivelser'
+            config: opsætning
+            options: Indstillinger
+            createnew: 'Opret ny udgave?'
+            loadarticles: 'Hent artikler'
+            from: fra
+            noissues: 'Ingen mobil udgivelser defineret.'
+            published: Udgivet
+            submitted: Indsendt
+            frozen: Frosset
+            search: Søg
+            saved: 'Ordren er gemt.'
+            articlesloaded: 'Artikler hentet.'
+            chooseprintsection: 'Vælg printsektion'
+            chooseprintstory: 'Vælg printhistorie'
+            addnew: 'Eller tilføj ny'
+            backtolist: 'Eller tilbage til listen'
+            addnewone: 'Tilføj ny'
+            articleremoved: 'Artikle fjernet.'
+            isfrozen: 'Udgivelsen er frosset.'
+            articletitle: 'Artikel titel'
+            webcode: Webkode
+            articletype: 'Artikel type'
+            section: 'Online sektion'
+            printsection: Printsektion
+            printstory: Printhistorie
+            prominent: Prominent
+            processing: Arbejder...
+            gotoipad: 'Gå til iPad sektion'
+            inlineediterror: 'Ingen ændringer at gemme.'
+            tip: Tip
+            tipmsg: 'Ændring af rækkefølgen vil kassere alle ugemte ændringer.'
+            noarticles: 'Ingen artikler at hente.'
+            notypes: '''iPad_Ad'' og/eller ''mobile_issue'' artikel typerne findes ikke. Opret dem manuelt. Se plugin dokumentationen.'
         btn:
-            addarticles: null
-            delete: null
-            save: null
-            preview: null
-            saveall: null
+            addarticles: 'Tilføj nye artikler'
+            delete: Slet
+            save: Gem
+            preview: Smugkig
+            saveall: 'Gem alt'
         msg:
-            saved: null
-            error: null
-            ipaderror: null
-            loading: null
-            noprintdeskuser: null
+            saved: Gemt.
+            error: 'Kunne ikke gemme'
+            ipaderror: 'iPad sektion findes ikke. Lav en ''iPad'' sektion for at tilføje mobil udgivelser.'
+            loading: Henter...
+            noprintdeskuser: 'Ingen printdesk bruger defineret. Lav ''printdesk'' bruger.'
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Viser _START_ til _END_ af _TOTAL_'
+            noentries: 'Intet at vise'
+            filtering: '- filtreret fra _MAX_ opslag'
+            menu: 'Vis _MENU_ opslag'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Søg
+                filter: Filtrér
+                processing: Arbejder...
+                last: Sidste
+                next: Næste
+                first: Første
+                previous: Forrige
+                norecords: 'Ingen opslag.'
