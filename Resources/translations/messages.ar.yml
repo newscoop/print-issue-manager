@@ -1,13 +1,13 @@
-Plugins: null
+Plugins: 'وحدات قابسة'
 plugin:
     printissuemanager:
         label:
-            title: null
-            config: null
-            options: null
-            createnew: null
-            loadarticles: null
-            from: null
+            title: 'مدير طبعة الإصدار'
+            config: الإعدادات.
+            options: إختيارات
+            createnew: 'أنشأ إصدار جديد؟'
+            loadarticles: 'حمّل مقالات'
+            from: ' من'
             noissues: null
             published: null
             submitted: null
