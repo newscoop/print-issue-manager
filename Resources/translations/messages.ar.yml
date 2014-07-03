@@ -45,20 +45,20 @@ plugin:
         msg:
             saved: 'حُفظ بنجاح'
             error: 'لم يُحفظ'
-            ipaderror: null
-            loading: null
+            ipaderror: 'لا يوجد قسم الأي باد. إنشأ قسم ال "أي باد" أولاً لإضافة إصدارات متنقلة.'
+            loading: 'في عملية تحميل...'
             noprintdeskuser: 'لم يتم العثور على مستخدم ''printdesk''. قم بإنشاء مستخدم ''printdesk'''
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'عرض _START_ ل_END_ من _TOTAL_ إدخالات'
+            noentries: 'لا توجد إدخالات للظهور.'
+            filtering: '- تصفية من السجلات _MAX_'
+            menu: 'عرض سجلات من _MENU_'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: البحث
+                filter: التصفية
+                processing: 'في عملية المعالجة...'
+                last: الأخير
+                next: التالي
+                first: الأول
+                previous: السابق
+                norecords: 'لم يتم العثور على سجلات.'
