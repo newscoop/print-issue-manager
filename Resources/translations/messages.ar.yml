@@ -8,43 +8,43 @@ plugin:
             createnew: 'أنشأ إصدار جديد؟'
             loadarticles: 'حمّل مقالات'
             from: ' من'
-            noissues: null
-            published: null
-            submitted: null
-            frozen: null
-            search: null
-            saved: null
-            articlesloaded: null
-            chooseprintsection: null
-            chooseprintstory: null
-            addnew: null
-            backtolist: null
-            addnewone: null
-            articleremoved: null
-            isfrozen: null
-            articletitle: null
-            webcode: null
-            articletype: null
-            section: null
-            printsection: null
-            printstory: null
-            prominent: null
-            processing: null
-            gotoipad: null
+            noissues: 'لا يوجد إصدارات خاصة بالموبايلات.'
+            published: 'تم النشر'
+            submitted: 'تم التسليم'
+            frozen: مجمّد
+            search: بحث
+            saved: 'تم حفظ الترتيب'
+            articlesloaded: 'تم تحميل مقالات.'
+            chooseprintsection: 'إختر قسم الطبع'
+            chooseprintstory: 'أخترطريقة الطبع'
+            addnew: 'أو أضف جديدا'
+            backtolist: 'أو العودة إلى القائمة'
+            addnewone: 'أضف جديدا'
+            articleremoved: 'تم حذف المقال '
+            isfrozen: 'هذا الإصدار مجمّد.'
+            articletitle: 'عنوان المقال'
+            webcode: 'كود الويب'
+            articletype: 'نوع المقال'
+            section: 'قسم  الإنترنت'
+            printsection: 'قسم الطبع'
+            printstory: 'طريقة الطبع.'
+            prominent: واعد.
+            processing: 'في عملية المعالجة...'
+            gotoipad: 'إذهب الى قسم الأي باد'
             inlineediterror: 'لم تجر أية تغييرات ضمنية.تم رفض الحفظ.'
-            tip: null
+            tip: نصيحة
             tipmsg: 'إعادة الترتيب سيقوم بمحو جميع التغييرات الغير محفوظة.'
-            noarticles: null
+            noarticles: 'لم يتم العثور على مقالات للتحميل.'
             notypes: '''iPad_Ad'' و / أو ''mobile_issue "أنواع هذه المادة لا وجود لها.  قم بإنشائها يدوياً. الرجاء مراجعة وثائق البرنامج المساعد.'
         btn:
-            addarticles: null
-            delete: null
-            save: null
-            preview: null
-            saveall: null
+            addarticles: 'أضف مقالات جديدة'
+            delete: حذف
+            save: حفظ
+            preview: معاينة
+            saveall: 'حفظ الكل'
         msg:
-            saved: null
-            error: null
+            saved: 'حُفظ بنجاح'
+            error: 'لم يُحفظ'
             ipaderror: null
             loading: null
             noprintdeskuser: 'لم يتم العثور على مستخدم ''printdesk''. قم بإنشاء مستخدم ''printdesk'''
