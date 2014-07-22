@@ -1,4 +1,4 @@
-Plugins: null
+Plugins: Plaqinlər
 plugin:
     printissuemanager:
         label:
@@ -22,14 +22,14 @@ plugin:
             addnewone: null
             articleremoved: null
             isfrozen: null
-            articletitle: null
-            webcode: null
+            articletitle: 'Məqalə başlığı'
+            webcode: Vebşifrə
             articletype: null
             section: null
             printsection: null
             printstory: null
             prominent: null
-            processing: null
+            processing: İcradadır...
             gotoipad: null
             inlineediterror: null
             tip: null
@@ -39,26 +39,26 @@ plugin:
         btn:
             addarticles: null
             delete: null
-            save: null
-            preview: null
+            save: Saxla
+            preview: 'İlkin görüntü'
             saveall: null
         msg:
-            saved: null
+            saved: 'Uğurla saxlandı.'
             error: null
             ipaderror: null
-            loading: null
+            loading: Yüklənir...
             noprintdeskuser: null
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: BÜTÜN_girişlərin_BAŞDAN_SONA_kimi_nümayişi
+            noentries: 'Nümayiş üçün firiş yoxdur'
+            filtering: '- _MAX_ yazılarından filterləmə'
+            menu: '_MENYU_ yazılarını göstər'
             label:
                 search: null
                 filter: null
-                processing: null
-                last: null
+                processing: İcradadır...
+                last: Son
                 next: null
-                first: null
+                first: İlk
                 previous: null
-                norecords: null
+                norecords: 'Yazı tapılmadı.'
