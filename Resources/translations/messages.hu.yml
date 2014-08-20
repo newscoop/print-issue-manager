@@ -2,63 +2,63 @@ Plugins: Bővítmények
 plugin:
     printissuemanager:
         label:
-            title: null
-            config: null
-            options: null
-            createnew: null
-            loadarticles: null
-            from: null
-            noissues: null
-            published: null
-            submitted: null
-            frozen: null
-            search: null
+            title: 'Nyomtatott szám kezelő'
+            config: konfiguráció
+            options: Beállítások
+            createnew: 'Új szám létrehozása?'
+            loadarticles: 'Cikkek betöltése'
+            from: 'innen:'
+            noissues: 'Nincsenek mobilszámok megadva.'
+            published: Közzétéve
+            submitted: Elküldve
+            frozen: Felfüggesztve
+            search: Keresés
             saved: null
-            articlesloaded: null
-            chooseprintsection: null
+            articlesloaded: 'A cikkek betöltése megtörtént.'
+            chooseprintsection: 'Válassz nyomtatási rovatot'
             chooseprintstory: null
             addnew: null
             backtolist: null
-            addnewone: null
-            articleremoved: null
+            addnewone: 'Új hozzáadása'
+            articleremoved: 'A cikk eltávolítása megtörtént.'
             isfrozen: null
-            articletitle: null
-            webcode: null
-            articletype: null
-            section: null
+            articletitle: 'Cikk címe'
+            webcode: Webkód
+            articletype: 'Cikk típusa'
+            section: 'Online rovat'
             printsection: null
             printstory: null
             prominent: null
-            processing: null
+            processing: Feldolgozás...
             gotoipad: null
             inlineediterror: null
-            tip: null
+            tip: Tipp
             tipmsg: null
-            noarticles: null
+            noarticles: 'Nincsenek betöltendő cikkek. '
             notypes: null
         btn:
-            addarticles: null
-            delete: null
-            save: null
-            preview: null
-            saveall: null
+            addarticles: 'Új cikkek hozzáadása'
+            delete: Törlés
+            save: Mentés
+            preview: Előnézet
+            saveall: 'Az összes mentése'
         msg:
-            saved: null
-            error: null
+            saved: 'A mentés sikerült.'
+            error: 'A mentés nem sikerült.'
             ipaderror: null
-            loading: null
+            loading: Betöltés...
             noprintdeskuser: null
         table:
             info: null
-            noentries: null
-            filtering: null
-            menu: null
+            noentries: 'Nincs megjelenítendő bejegyzés'
+            filtering: '- szűrés a _MAX_ rekordokból'
+            menu: '_MENU_ rekordok kijelzése'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Keresés
+                filter: Szűrő
+                processing: Feldolgozás...
+                last: Utolsó
+                next: Következő
+                first: Első
+                previous: Előző
+                norecords: 'Nem találhatók rekordok.'
