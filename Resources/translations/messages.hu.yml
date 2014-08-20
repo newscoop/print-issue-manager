@@ -13,7 +13,7 @@ plugin:
             submitted: Elküldve
             frozen: Felfüggesztve
             search: Keresés
-            saved: null
+            saved: 'A rendelés mentése megtörtént.'
             articlesloaded: 'A cikkek betöltése megtörtént.'
             chooseprintsection: 'Válassz nyomtatási rovatot'
             chooseprintstory: null
