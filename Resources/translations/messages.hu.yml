@@ -30,7 +30,7 @@ plugin:
             printstory: null
             prominent: null
             processing: Feldolgozás...
-            gotoipad: null
+            gotoipad: 'Ugrás az IPad rovathoz'
             inlineediterror: null
             tip: Tipp
             tipmsg: null
@@ -45,11 +45,11 @@ plugin:
         msg:
             saved: 'A mentés sikerült.'
             error: 'A mentés nem sikerült.'
-            ipaderror: null
+            ipaderror: 'Nem létezik iPad-rovat. Előbb hozd létre az ''iPad'' rovatot, hogy mobil számokat adhass hozzá.'
             loading: Betöltés...
-            noprintdeskuser: null
+            noprintdeskuser: 'Nincs printdesk felhasználó megadva. Hozd létre a ''printdesk" felhasználót.'
         table:
-            info: null
+            info: 'A _START_ a _VÉGE_ a _TELJES_ bejegyzések megjelenítése'
             noentries: 'Nincs megjelenítendő bejegyzés'
             filtering: '- szűrés a _MAX_ rekordokból'
             menu: '_MENU_ rekordok kijelzése'
