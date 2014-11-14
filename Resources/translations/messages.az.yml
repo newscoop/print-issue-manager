@@ -3,16 +3,16 @@ plugin:
     printissuemanager:
         label:
             title: null
-            config: null
-            options: null
+            config: konfiqurasiya
+            options: Seçimlər
             createnew: null
             loadarticles: null
             from: null
             noissues: null
-            published: null
-            submitted: null
+            published: 'Nümayiş edildi'
+            submitted: 'Daxil Edildi'
             frozen: null
-            search: null
+            search: Axtar
             saved: null
             articlesloaded: null
             chooseprintsection: null
@@ -38,7 +38,7 @@ plugin:
             notypes: null
         btn:
             addarticles: null
-            delete: null
+            delete: Sil
             save: Saxla
             preview: 'İlkin görüntü'
             saveall: null
@@ -54,11 +54,11 @@ plugin:
             filtering: '- _MAX_ yazılarından filterləmə'
             menu: '_MENYU_ yazılarını göstər'
             label:
-                search: null
-                filter: null
+                search: Axtar
+                filter: Filtr
                 processing: İcradadır...
                 last: Son
-                next: null
+                next: Növbəti
                 first: İlk
-                previous: null
+                previous: Əvvəlki
                 norecords: 'Yazı tapılmadı.'
