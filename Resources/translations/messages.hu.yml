@@ -24,7 +24,7 @@ plugin:
             isfrozen: null
             articletitle: 'Cikk címe'
             webcode: Webkód
-            articletype: 'Cikk típusa'
+            articletype: Cikktípus
             section: 'Online rovat'
             printsection: null
             printstory: null
@@ -49,7 +49,7 @@ plugin:
             loading: Betöltés...
             noprintdeskuser: 'Nincs printdesk felhasználó megadva. Hozd létre a ''printdesk" felhasználót.'
         table:
-            info: 'A _START_ a _VÉGE_ a _TELJES_ bejegyzések megjelenítése'
+            info: '_START_ - _END_. bejegyzés / _TOTAL_ megjelenítése'
             noentries: 'Nincs megjelenítendő bejegyzés'
             filtering: '- szűrés a _MAX_ rekordokból'
             menu: '_MENU_ rekordok kijelzése'
