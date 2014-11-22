@@ -21,7 +21,7 @@ plugin:
             backtolist: null
             addnewone: 'Új hozzáadása'
             articleremoved: 'A cikk eltávolítása megtörtént.'
-            isfrozen: null
+            isfrozen: 'Ez a szám befagyasztva.'
             articletitle: 'Cikk címe'
             webcode: Webkód
             articletype: Cikktípus
@@ -35,7 +35,7 @@ plugin:
             tip: Tipp
             tipmsg: 'Az újrarendezés minden eddig el nem mentett belső változtatást törölni fog.'
             noarticles: 'Nincsenek betöltendő cikkek. '
-            notypes: '''IPad_Hirdetés'' és/vagy ''mobil_szám'' cikktípusok nem léteznek. Hozd őket létre. Tekintsd meg a bővítmény dokumentációját.'
+            notypes: '''IPad_Hirdetés'' és/vagy ''mobil_szám'' cikktípus nem létezik. Hozd őket létre. Tekintsd meg a bővítmény dokumentációját.'
         btn:
             addarticles: 'Új cikkek hozzáadása'
             delete: Törlés
