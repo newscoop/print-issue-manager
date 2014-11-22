@@ -33,7 +33,7 @@ plugin:
             gotoipad: 'Ugrás az IPad rovathoz'
             inlineediterror: null
             tip: Tipp
-            tipmsg: null
+            tipmsg: 'Az újrarendezés minden eddig el nem mentett belső változtatást törölni fog.'
             noarticles: 'Nincsenek betöltendő cikkek. '
             notypes: null
         btn:
