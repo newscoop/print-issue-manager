@@ -31,11 +31,11 @@ plugin:
             prominent: null
             processing: Feldolgozás...
             gotoipad: 'Ugrás az IPad rovathoz'
-            inlineediterror: null
+            inlineediterror: 'Belső változtatások nem történtek. A mentés elvetve.'
             tip: Tipp
             tipmsg: 'Az újrarendezés minden eddig el nem mentett belső változtatást törölni fog.'
             noarticles: 'Nincsenek betöltendő cikkek. '
-            notypes: null
+            notypes: '''IPad_Hirdetés'' és/vagy ''mobil_szám'' cikktípusok nem léteznek. Hozd őket létre. Tekintsd meg a bővítmény dokumentációját.'
         btn:
             addarticles: 'Új cikkek hozzáadása'
             delete: Törlés
