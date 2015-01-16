@@ -1,18 +1,18 @@
-Plugins: null
+Plugins: Pluginovi
 plugin:
     printissuemanager:
         label:
             title: null
             config: null
-            options: null
+            options: Opcije
             createnew: null
             loadarticles: null
             from: null
             noissues: null
-            published: null
-            submitted: null
+            published: Objavljen
+            submitted: Predat
             frozen: null
-            search: null
+            search: Traži
             saved: null
             articlesloaded: null
             chooseprintsection: null
@@ -22,14 +22,14 @@ plugin:
             addnewone: null
             articleremoved: null
             isfrozen: null
-            articletitle: null
-            webcode: null
+            articletitle: 'Naslov teksta'
+            webcode: 'Web kod'
             articletype: null
             section: null
             printsection: null
             printstory: null
             prominent: null
-            processing: null
+            processing: Obrađujem...
             gotoipad: null
             inlineediterror: null
             tip: null
@@ -38,27 +38,27 @@ plugin:
             notypes: null
         btn:
             addarticles: null
-            delete: null
-            save: null
-            preview: null
+            delete: Obriši
+            save: Snimi
+            preview: Pregled
             saveall: null
         msg:
-            saved: null
+            saved: 'Uspešno snimljeno.'
             error: null
             ipaderror: null
-            loading: null
+            loading: Učitavanje...
             noprintdeskuser: null
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Prikazano _START_ do _END_ od _TOTAL_ unosa'
+            noentries: 'Nema unosa za prikaz'
+            filtering: '- filtriranje među _MAX_ zapisa'
+            menu: 'Prikaži _MENU_ zapise'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Traži
+                filter: Filter
+                processing: Obrađujem...
+                last: Poslednji
+                next: Sledeći
+                first: Prvi
+                previous: Prethodni
+                norecords: 'Nema zapisa'
