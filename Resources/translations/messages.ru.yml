@@ -1,19 +1,19 @@
-Plugins: null
+Plugins: Плагины
 plugin:
     printissuemanager:
         label:
             title: null
             config: null
-            options: null
+            options: Варианты
             createnew: null
             loadarticles: null
             from: null
             noissues: null
-            published: null
-            submitted: null
+            published: Опубликовано
+            submitted: Отправлено
             frozen: null
-            search: null
-            saved: null
+            search: Поиск
+            saved: 'Порядок сохранен.'
             articlesloaded: null
             chooseprintsection: null
             chooseprintstory: null
@@ -22,14 +22,14 @@ plugin:
             addnewone: null
             articleremoved: null
             isfrozen: null
-            articletitle: null
-            webcode: null
+            articletitle: 'Название статьи'
+            webcode: Web-код
             articletype: null
             section: null
             printsection: null
             printstory: null
             prominent: null
-            processing: null
+            processing: Обработка...
             gotoipad: null
             inlineediterror: null
             tip: null
@@ -38,27 +38,27 @@ plugin:
             notypes: null
         btn:
             addarticles: null
-            delete: null
-            save: null
-            preview: null
+            delete: Удалить
+            save: Сохранить
+            preview: 'Предварительный просмотр'
             saveall: null
         msg:
-            saved: null
+            saved: 'Сохранение завершено.'
             error: null
             ipaderror: null
-            loading: null
+            loading: Загрузка...
             noprintdeskuser: null
         table:
-            info: null
-            noentries: null
-            filtering: null
-            menu: null
+            info: 'Показано _START_ до _END_ / _TOTAL_ записей'
+            noentries: 'Нет записей для просмотра'
+            filtering: 'фильтрация от _MAX_ записей'
+            menu: 'Отобразить _MENU_ записи'
             label:
-                search: null
-                filter: null
-                processing: null
-                last: null
-                next: null
-                first: null
-                previous: null
-                norecords: null
+                search: Поиск
+                filter: Фильтр
+                processing: Обработка...
+                last: Последний
+                next: Следующ.
+                first: Первый
+                previous: Предыдущ.
+                norecords: 'Не выбрана ни одна из записей'
